@@ -1,0 +1,95 @@
+* {
+    background: rgba(40, 40, 40, 100%);
+    background-dark: rgba(24, 24, 24, 100%);
+    background-light: rgba(64, 64, 64, 100%);
+
+    foreground: rgba(255, 255, 255, 100%);
+
+    window-border: rgba(56, 56, 56, 100%);
+
+    background-color: inherit;
+    text-color: @foreground;
+}
+
+window {
+    background-color: @background;
+    padding: 10px;
+    border: 1px;
+    border-radius: 5px;
+    border-color: @window-border;
+}
+
+mainbox {
+    padding: 0;
+    border: 0;
+    spacing: 0;
+
+    children: [ inputbar, mode-switcher, listview ];
+}
+
+// Text input
+icon-run {
+    filename: "icons/gear.svg";
+    size: 14px;
+    expand: false;
+    margin: 0px 5px;
+}
+
+inputbar {
+    children: [ icon-run, entry ];
+    background-color: @background-dark;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+entry {
+
+}
+
+// Element list
+listview {
+    border: 1px;
+    border-radius: 2.5px;
+    border-color: @window-border;
+}
+
+element {
+    children: [ element-icon, element-text ];
+    padding: 2px 8px;
+}
+
+element.selected {
+    background-color: @background-light;
+}
+
+element.alternate {
+    background-color: rgba(36, 36, 36, 100%);
+}
+
+element-icon {
+    margin: 0px 5px 0px 0px;
+    size: 24px;
+}
+
+element-text {
+    font: "Fira Mono 10.75";
+    vertical-align: 0.5;
+}
+
+// Mode switcher
+mode-switcher {
+    margin: 10px 0px 0px 0px;
+    spacing: 5px;
+}
+
+button {
+    background-color: rgba(32, 32, 32, 100%);
+    border: 0px 0px 4px 0px;
+    padding: 5px;
+}
+
+button selected {
+    background-color: @window-border;
+    border-color: @window-border;
+    border-radius: 5px 5px 0px 0px;
+}

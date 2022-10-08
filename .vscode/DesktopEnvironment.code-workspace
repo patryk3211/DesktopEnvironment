@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "..",
+		}
+	],
+	"settings": {
+		"svg.preview.background": "white",
+		"Lua.diagnostics.globals": [
+			"awesome",
+			"root",
+			"client",
+			"screen"
+		]
+	}
+}
