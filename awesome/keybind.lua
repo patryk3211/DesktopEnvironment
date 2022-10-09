@@ -16,18 +16,35 @@ function module.bindGlobal()
             screen.prompt()
         end, { description = "Spawn a new process from prompt" }),
         Awful.key({ config.modKey, "Shift" }, "r", function ()
-            Awful.spawn("killall picom")
             awesome.restart()
         end,
             { description = "Restart awesome" }),
         Awful.key({ }, "XF86AudioPlay", mediaPlayPause),
         Awful.key({ config.modKey }, " ", function ()
             Awful.tag.viewnone()
-        end),
+        end, { description = "Play/pause media" }),
         Awful.key({ config.modKey }, "m", function ()
             local screen = Awful.screen.focused()
             screen:toggleMainMenu()
-        end)
+        end, { description = "Toggle main menu" }),
+        Awful.key({ config.modKey }, "a", function ()
+            Awful.client.focus.byidx(-1)
+        end, { description = "Move focus to previous client" }),
+        Awful.key({ config.modKey }, "d", function ()
+            Awful.client.focus.byidx(1)
+        end, { description = "Move focus to next client" }),
+        Awful.key({ config.modKey, "Shift" }, "a", function ()
+            Awful.client.swap.byidx(-1)
+        end, { description = "Swap client with previous" }),
+        Awful.key({ config.modKey, "Shift" }, "d", function ()
+            Awful.client.swap.byidx(1)
+        end, { description = "Swap client with next" }),
+        Awful.key({ config.modKey }, "w", function ()
+            Awful.tag.incmwfact(0.05)
+        end, { description = "Increase master width factor" }),
+        Awful.key({ config.modKey }, "s", function ()
+            Awful.tag.incmwfact(-0.05)
+        end, { description = "Descrease master width factor" })
     )
 
     local keyBindCount = math.min(config.groupCount, 9)
@@ -46,14 +63,14 @@ function module.bindGlobal()
                 if tag then
                     Awful.tag.viewtoggle(tag)
                 end
-            end),
+            end, { description = "Toggle tag #"..i }),
             Awful.key({ config.modKey, "Shift" }, tostring(i), function ()
                 local screen = Awful.screen.focused()
                 local tag = screen.tags[i]
                 if tag and client.focus then
                     client.focus:move_to_tag(tag)
                 end
-            end)
+            end, { description = "Move client to tag #"..i })
         )
     end
 
@@ -76,6 +93,14 @@ module.clientButtons = Gears.table.join(
     end),
     Awful.button({}, 3, function (client)
         client:emit_signal("request::activate", "mouse_click", { raise = true })
+    end),
+    Awful.button({ config.modKey }, 1, function (client)
+        client:emit_signal("request::activate", "mouse_click", { raise = true })
+        Awful.mouse.client.move(client)
+    end),
+    Awful.button({ config.modKey }, 3, function (client)
+        client:emit_signal("request::activate", "mouse_click", { raise = true })
+        Awful.mouse.client.resize(client)
     end)
 )
 

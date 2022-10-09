@@ -11,6 +11,11 @@ function module.connect()
         if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
             Awful.placement.no_offscreen(c)
         end
+
+        -- Spawn dialog windows on the center
+        if c.type == "dialog" then
+            Awful.placement.centered(c)
+        end
     end)
 
     client.connect_signal("focus", function (c)

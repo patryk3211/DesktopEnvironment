@@ -1,5 +1,3 @@
-local rubato = require("rubato")
-
 local config    = require("config")
 local utility   = require("utility")
 local controlWidget = require("widgets.control")
@@ -8,7 +6,6 @@ local profileWidget = require("widgets.profile")
 local powermenuWidget = require("widgets.powermenu")
 local wifiPopup = require("widgets.wifipopup")
 local placesWidget = require("widgets.places")
-local easing = require("easing")
 
 local module = {}
 
@@ -33,12 +30,17 @@ local function widgetContainer(widget)
 end
 
 local function refreshButtons()
+    -- Refresh wifi button
     Awful.spawn.easy_async("nmcli -g wifi-hw g", function (stdout)
         if stdout:sub(1, -2) == "enabled" then
             Awful.spawn.easy_async("nmcli -g name,type con", function (stdout)
                 local name = stdout:match("([%w%d _%-]+):802%-11%-wireless")
                 if name then
                     module.control.controlButtons.wifi.setArg("enabled", true)
+                    Awful.spawn.easy_async("nmcli -g type,state dev", function (stdout)
+                        local state = stdout:match("wifi:(%w+)")
+                        module.control.controlButtons.wifi.setArg("state", state == "connected")
+                    end)
                     if module.control.controlButtons.wifi.conn == nil then
                         module.control.controlButtons.wifi.conn = name
                     end
@@ -47,6 +49,29 @@ local function refreshButtons()
         else
             module.control.controlButtons.wifi.setArg("enabled", false)
         end
+    end)
+
+    -- Refresh sound buttons
+    Awful.spawn.easy_async("amixer -D pulse get Master", function (stdout, stderr, code, reason)
+        local percent, state = stdout:match("Playback%s+%d+%s+%[(%d+)%%%]%s+%[(%w+)%]")
+        module.sound.speakerVolume = percent / 100
+        if state == "on" then
+            module.sound.speakerState = true
+        else
+            module.sound.speakerState = false
+        end
+        module.sound.updateBars()
+    end)
+
+    Awful.spawn.easy_async("amixer -D pulse get Capture", function (stdout, stderr, code, reason)
+        local percent, state = stdout:match("Capture%s+%d+%s+%[(%d+)%%%]%s+%[(%w+)%]")
+        module.sound.microphoneVolume = percent / 100
+        if state == "on" then
+            module.sound.microphoneState = true
+        else
+            module.sound.microphoneState = false
+        end
+        module.sound.updateBars()
     end)
 end
 

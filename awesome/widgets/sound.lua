@@ -164,6 +164,11 @@ function module.make(audioInfoCallback)
             end
         end
 
+        widget.updateBars = function ()
+            bars[1].slider.setValue(widget.speakerVolume)
+            bars[2].slider.setValue(widget.microphoneVolume)
+        end
+
         audioInfoCallback({
             { volume = widget.speakerVolume, state = widget.speakerState },
             { volume = widget.microphoneVolume, state = widget.microphoneState }

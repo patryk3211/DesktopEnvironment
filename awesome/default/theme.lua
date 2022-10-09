@@ -11,6 +11,7 @@ local config = require("config")
 
 local theme = {}
 
+-- Default style variables
 theme.font = "Hack Nerd Regular 12"
 
 theme.bg_normal     = "#282828"
@@ -50,6 +51,7 @@ theme.taglist_bg_volatile = "#00ff00" -- TODO
 theme.taglist_fg_volatile = "#0000ff" -- TODO
 theme.taglist_font = "Hack Nerd Regular 28"
 
+-- Set info bar style
 theme.clock_bg = "#181818"
 theme.clock_fg = "#dddddd"
 
@@ -67,6 +69,7 @@ theme.mm_container_bg = "#181818"
 theme.mm_container_margin = 10
 theme.mm_spacing = 10
 
+-- Control widget style
 theme.mm_control_spacing = 10
 theme.mm_control_bg = "#181818"
 theme.mm_control_button_size = 56
@@ -76,11 +79,13 @@ theme.mm_control_button_color_disabled = "#383838"
 theme.mm_control_icon_color = "#ffffff"
 theme.mm_control_icon_disabled_color = "#808080"
 
+-- Sound widget style
 theme.mm_sound_slider_bg = "#101010"
 theme.mm_sound_slider_color = "#207bb8"
 theme.mm_sound_slider_color_muted = "#606060"
 theme.mm_sound_icon_color = "#ffffff"
 
+-- Power widget style
 theme.mm_powermenu_icon_colors = {
     "#ffffff",
     "#ffffff",
@@ -88,10 +93,10 @@ theme.mm_powermenu_icon_colors = {
     "#ffffff",
     "#ffffff"
 }
-
 theme.mm_powermenu_bg = "#181818"
 theme.mm_powermenu_bg_hover = "#202020"
 
+-- Wifi widget style
 theme.mm_wifi_bg = "#282828"
 theme.mm_wifi_border = "#181818"
 theme.mm_wifi_header = "#181818"
@@ -100,9 +105,11 @@ theme.mm_wifi_entry_bg_hover = "#303030"
 theme.mm_wifi_entry_bg_connected = "#000000"
 theme.mm_wifi_entry_bg_connected_hover = "#ffffff"
 
+-- Profile widget style
 theme.mm_profile_username_color = "#ffffff"
 theme.mm_profile_hostname_color = "#aaaaaa"
 
+-- Places widget style
 theme.mm_places_header_color = "#ffffff"
 theme.mm_places_text_colors = {
     "#ffffff"
@@ -110,23 +117,15 @@ theme.mm_places_text_colors = {
 theme.mm_places_entry_color = "#181818"
 theme.mm_places_entry_hover_color = "#202020"
 
--- Variables set for theming notifications:
--- notification_font
--- notification_[bg|fg]
--- notification_[width|height|margin]
--- notification_[border_color|border_width|shape|opacity]
-
--- Variables set for theming the menu:
--- menu_[bg|fg]_[normal|focus]
--- menu_[border_color|border_width]
-theme.menu_submenu_icon = themes_path.."default/submenu.png"
-theme.menu_height = dpi(15)
-theme.menu_width  = dpi(100)
-
--- You can add as many variables as
--- you wish and access them by using
--- beautiful.variable in your rc.lua
---theme.bg_widget = "#cc0000"
+-- Notification style
+theme.notification_height = 120
+theme.notification_width = 360
+theme.notification_margin = 10
+theme.notification_icon_size = theme.notification_height - theme.notification_margin
+theme.notification_border_width = 1
+theme.notification_border_color = "#383838"
+theme.notification_bg = "#282828"
+theme.notification_fg = "#aaaaaa"
 
 -- Define the image to load
 --theme.titlebar_close_button_normal = themes_path.."default/titlebar/close_normal.png"
@@ -155,6 +154,7 @@ theme.menu_width  = dpi(100)
 --theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
 --theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
 
+-- Pictures
 theme.wallpaper = config.themePath.."/wallpaper.jpg"
 theme.profile_picture = config.themePath.."/profile.png"
 
@@ -187,9 +187,9 @@ theme.getIcon = function (name, color)
     end
 end
 
-theme.mainMenuIcon = theme.getIcon("arch") --config.iconPath.."/arch.svg"
-theme.leftTriangle = theme.getIcon("triangle-left-h") --config.iconPath.."/triangle-left-h.svg"
-theme.rightTriangle = theme.getIcon("triangle-right-h") --config.iconPath.."/triangle-right-h.svg"
+theme.mainMenuIcon = theme.getIcon("arch")
+theme.leftTriangle = theme.getIcon("triangle-left-h")
+theme.rightTriangle = theme.getIcon("triangle-right-h")
 
 -- Define the icon theme for application icons. If not set then the icons
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.

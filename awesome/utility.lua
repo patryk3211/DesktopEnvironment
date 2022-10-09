@@ -8,7 +8,7 @@ local svgCache = {}
 
 function module.notifyInfo(title, text)
     naughty.notify({
-        preset = naughty.config.presets.info,
+        preset = naughty.config.presets.normal,
         title = title,
         text = text
     })
