@@ -18,6 +18,7 @@ Packages that have to be downloaded to run this setup
 - i3lock - Lock screen used, you will have to compile it from an aur repository: [`i3lock-color`](https://aur.archlinux.org/packages/i3lock-color)
 - xss-lock - Allows i3lock to be connected to Xorg locking mechanism, Arch package: [`xss-lock`](https://archlinux.org/packages/community/x86_64/xss-lock)
 - lxappearance - Used to setup GTK theme and icons, Arch package: [`lxappearance`](https://archlinux.org/packages/community/x86_64/lxappearance)
+- ly - Display manager used, Aur package: [`ly`](https://aur.archlinux.org/packages/ly)
 
 ### Fonts
 - Roboto - Font for the UI of applications, Arch package: [`ttf-roboto`](https://archlinux.org/packages/community/any/ttf-roboto)
