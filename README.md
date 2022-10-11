@@ -25,6 +25,7 @@ Packages that have to be downloaded to run this setup
 - Hack - Font for the Awesome UI, Arch package: [`ttf-hack`](https://archlinux.org/packages/extra/any/ttf-hack)
 - Fira Mono - Monospace font, Arch package: [`ttf-fira-mono`](https://archlinux.org/packages/community/any/ttf-fira-mono)
 - Fira Code - Monospace font with cool effects, Arch package: [`ttf-fira-code`](https://archlinux.org/packages/community/any/ttf-fira-code)
+- Font Awesome - Font used for some symbols, Arch package: [`ttf-font-awesome`](https://archlinux.org/packages/community/any/ttf-font-awesome)
 
 ## Resources used
 List of all outside resources contained in this repository
