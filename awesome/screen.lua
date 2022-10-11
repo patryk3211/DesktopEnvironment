@@ -18,20 +18,28 @@ local function makeSystray()
         right = 6,
         left = 6,
         {
-            widget = Wibox.container.background,
-            bg = Theme.bg_systray,
-            shape = function (cr, width, height)
-                return Gears.shape.rounded_rect(cr, width, height, 5)
-            end,
+            layout = Wibox.layout.fixed.horizontal,
             {
-                widget = Wibox.container.margin,
-                top = 4,
-                bottom = 4,
-                left = 8,
-                right = 8,
+                widget = Wibox.widget.imagebox,
+                image = Theme.getIcon("triangle-left-h", Theme.bg_systray),
+            },
+            {
+                widget = Wibox.container.background,
+                bg = Theme.bg_systray,
                 {
-                    widget = Wibox.widget.systray
+                    widget = Wibox.container.margin,
+                    top = 4,
+                    bottom = 4,
+                    left = 4,
+                    right = 4,
+                    {
+                        widget = Wibox.widget.systray
+                    }
                 }
+            },
+            {
+                widget = Wibox.widget.imagebox,
+                image = Theme.getIcon("triangle-right-h", Theme.bg_systray)
             }
         }
     }

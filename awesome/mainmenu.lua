@@ -75,6 +75,13 @@ local function refreshButtons()
     end)
 end
 
+local buttonRefreshTimer = Gears.timer {
+    timeout = 1.5,
+    autostart = false,
+    single_shot = true,
+    callback = refreshButtons
+}
+
 local function makeWidget()
     if module.menuGrid == nil then
         -- Make button control widget
@@ -164,7 +171,7 @@ local function makeKeyGrabber()
                 { { config.modKey }, "m", function ()
                     local screen = Awful.screen.focused()
                     screen:toggleMainMenu()
-                end}
+                end }
             }
         }
     end
@@ -193,7 +200,7 @@ local function toggleMainMenu(screen)
         module.keyGrabber:stop()
     else
         module.mainMenu.visible = true
-        refreshButtons()
+        buttonRefreshTimer:start()
         module.keyGrabber:start()
     end
 end

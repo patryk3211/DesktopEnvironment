@@ -70,7 +70,22 @@ function module.bindGlobal()
                 if tag and client.focus then
                     client.focus:move_to_tag(tag)
                 end
-            end, { description = "Move client to tag #"..i })
+            end, { description = "Move client to tag #"..i }),
+            Awful.key({ config.modKey, "Mod1" }, tostring(i), function ()
+                local screen = Awful.screen.focused()
+                local tag = screen.tags[i]
+                if tag then
+                    local configEntry = config.groups[tag.index]
+                    local exec = configEntry.program
+                    if exec then
+                        if configEntry.spawnOne then
+                            utility.spawnOne(exec)
+                        else
+                            Awful.spawn(exec)
+                        end
+                    end
+                end
+            end)
         )
     end
 
