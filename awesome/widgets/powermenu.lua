@@ -4,45 +4,47 @@ local easing = require("easing")
 
 local module = {}
 
-function module.make(hideMenuFunc, orientation)
-    local buttons = {
-        { -- I might want the power actions to require a confirmation
-            icon = "poweroff",
-            func = function ()
-                Awful.spawn("systemctl poweroff")
+module.buttons = {
+    { -- I might want the power actions to require a confirmation
+        icon = "poweroff",
+        func = function ()
+            Awful.spawn("systemctl poweroff")
+        end
+    },
+    {
+        icon = "reboot",
+        func = function ()
+            Awful.spawn("systemctl reboot")
+        end
+    },
+    {
+        icon = "lock",
+        func = function ()
+            module.hideMenuFunc()
+            Awful.spawn.with_shell("sleep 1; loginctl lock-session $XDG_SESSION_ID")
+        end
+    },
+    {
+        icon = "logout",
+        func = function ()
+            for _, c in ipairs(client.get()) do
+                -- Close all windows gracefully
+                c:kill()
             end
-        },
-        {
-            icon = "reboot",
-            func = function ()
-                Awful.spawn("systemctl reboot")
-            end
-        },
-        {
-            icon = "lock",
-            func = function ()
-                hideMenuFunc()
-                Awful.spawn.with_shell("sleep 1; loginctl lock-session $XDG_SESSION_ID")
-            end
-        },
-        {
-            icon = "logout",
-            func = function ()
-                for _, c in ipairs(client.get()) do
-                    -- Close all windows gracefully
-                    c:kill()
-                end
-                Awful.spawn.with_shell("loginctl terminate-session $XDG_SESSION_ID")
-            end
-        },
-        {
-            icon = "sleep",
-            func = function ()
-                hideMenuFunc()
-                Awful.spawn("systemctl suspend")
-            end
-        }
+            Awful.spawn.with_shell("loginctl terminate-session $XDG_SESSION_ID")
+        end
+    },
+    {
+        icon = "sleep",
+        func = function ()
+            module.hideMenuFunc()
+            Awful.spawn("systemctl suspend")
+        end
     }
+}
+
+function module.make(hideMenuFunc, orientation)
+    module.hideMenuFunc = hideMenuFunc
 
     local widget = nil
     if not orientation or orientation == "vertical" then
@@ -65,7 +67,7 @@ function module.make(hideMenuFunc, orientation)
         error("Unknown orientation specified, '"..tostring(orientation).."'", 1)
     end
 
-    for i, b in ipairs(buttons) do
+    for i, b in ipairs(module.buttons) do
         local img = Wibox.widget.imagebox(Theme.getIcon(b.icon, Theme.mm_powermenu_icon_colors[i]))
 
         local button = Wibox.widget {

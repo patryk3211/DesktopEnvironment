@@ -171,6 +171,26 @@ local function makeKeyGrabber()
                 { { config.modKey }, "m", function ()
                     local screen = Awful.screen.focused()
                     screen:toggleMainMenu()
+                end },
+                { { config.modKey }, "F1", function ()
+                    -- Power off
+                    powermenuWidget.buttons[1].func()
+                end },
+                { { config.modKey }, "F2", function ()
+                    -- Reboot
+                    powermenuWidget.buttons[2].func()
+                end },
+                { { config.modKey }, "F3", function ()
+                    -- Lock
+                    powermenuWidget.buttons[3].func()
+                end },
+                { { config.modKey }, "F4", function ()
+                    -- Logout
+                    powermenuWidget.buttons[4].func()
+                end },
+                { { config.modKey }, "F5", function ()
+                    -- Sleep
+                    powermenuWidget.buttons[5].func()
                 end }
             }
         }
