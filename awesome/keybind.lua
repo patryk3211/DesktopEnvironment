@@ -96,10 +96,14 @@ module.clientKeys = Gears.table.join(
     Awful.key({ config.modKey }, "q", function (client)
         client:kill()
     end, { description = "Close the current window" }),
-    Awful.key({ config.modKey }, "m", function (client)
+    Awful.key({ config.modKey }, "g", function (client)
         client.maximized = not client.maximized
         client:raise()
-    end)
+    end, { description = "Toggle maximize of the current window" }),
+    Awful.key({ config.modKey }, "f", function (client)
+        client.floating  = not client.floating
+        client:raise()
+    end, { description = "Toggle floating of the current window" })
 )
 
 module.clientButtons = Gears.table.join(

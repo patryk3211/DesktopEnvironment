@@ -7,3 +7,7 @@ export SSH_AUTH_SOCK
 
 alias vim="nvim"
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
+
+function getaur
+	git clone https://aur.archlinux.org/$argv[1].git
+end
