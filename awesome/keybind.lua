@@ -71,6 +71,15 @@ function module.bindGlobal()
                     client.focus:move_to_tag(tag)
                 end
             end, { description = "Move client to tag #"..i }),
+            Awful.key({ config.modKey, "Shift", "Control" }, tostring(i), function ()
+                local screen = Awful.screen.focused()
+                local tag = screen.tags[i]
+                for _, c in ipairs(screen.all_clients) do
+                    if c:isvisible() then
+                        c:move_to_tag(tag)
+                    end
+                end
+            end, { description = "Move all visible clients to tag #"..i }),
             Awful.key({ config.modKey, "Mod1" }, tostring(i), function ()
                 local screen = Awful.screen.focused()
                 local tag = screen.tags[i]
