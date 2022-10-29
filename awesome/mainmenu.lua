@@ -82,6 +82,11 @@ local buttonRefreshTimer = Gears.timer {
     callback = refreshButtons
 }
 
+local function openLocation(location)
+    Awful.spawn("dolphin "..location)
+    module.hideMenu()
+end
+
 local function makeWidget()
     if module.menuGrid == nil then
         -- Make button control widget
@@ -129,10 +134,7 @@ local function makeWidget()
         end)
 
         -- Make places widget
-        module.places = placesWidget.make(function (location)
-            Awful.spawn("dolphin "..location)
-            module.hideMenu()
-        end)
+        module.places = placesWidget.make(openLocation)
 
         -- Make module grid
         module.menuGrid = Wibox.widget {
@@ -160,39 +162,31 @@ end
 
 local function makeKeyGrabber()
     if module.keyGrabber == nil then
+        local keybinds = {
+            { {}, "m", module.control.controlButtons.microphone.toggleState },
+            { {}, "s", module.control.controlButtons.speaker.toggleState },
+            { {}, "Escape", function ()
+                local screen = Awful.screen.focused()
+                screen:toggleMainMenu()
+            end },
+            { { config.modKey }, "m", function ()
+                local screen = Awful.screen.focused()
+                screen:toggleMainMenu()
+            end }
+        }
+
+        -- Power Actions
+        for i = 1, 5 do
+            keybinds[#keybinds+1] = { { config.modKey }, "F"..tostring(i), powermenuWidget.buttons[i].func }
+        end
+
+        -- Places Actions
+        for i = 1, 5 do
+            keybinds[#keybinds+1] = { { }, tostring(i), function() openLocation(config.places[i].path) end }
+        end
+
         module.keyGrabber = Awful.keygrabber {
-            keybindings = {
-                { {}, "m", module.control.controlButtons.microphone.toggleState },
-                { {}, "s", module.control.controlButtons.speaker.toggleState },
-                { {}, "Escape", function ()
-                    local screen = Awful.screen.focused()
-                    screen:toggleMainMenu()
-                end },
-                { { config.modKey }, "m", function ()
-                    local screen = Awful.screen.focused()
-                    screen:toggleMainMenu()
-                end },
-                { { config.modKey }, "F1", function ()
-                    -- Power off
-                    powermenuWidget.buttons[1].func()
-                end },
-                { { config.modKey }, "F2", function ()
-                    -- Reboot
-                    powermenuWidget.buttons[2].func()
-                end },
-                { { config.modKey }, "F3", function ()
-                    -- Lock
-                    powermenuWidget.buttons[3].func()
-                end },
-                { { config.modKey }, "F4", function ()
-                    -- Logout
-                    powermenuWidget.buttons[4].func()
-                end },
-                { { config.modKey }, "F5", function ()
-                    -- Sleep
-                    powermenuWidget.buttons[5].func()
-                end }
-            }
+            keybindings = keybinds
         }
     end
 
