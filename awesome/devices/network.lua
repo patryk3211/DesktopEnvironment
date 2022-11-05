@@ -151,10 +151,17 @@ function module.refreshButtons(wifiButton, wiredButton)
     wifiButton.activeConn = nil
     wifiButton.specificObj = nil
 
+    wiredButton.specificObj = "/"
+    wiredButton.conn = nil
+    wiredButton.dev = nil
+    wiredButton.activeConn = nil
+
     module.getDevices(function (devices)
+        local foundWireless = false
+        local foundWired = false
+
         for _, dev in ipairs(devices) do
-            local found = false
-            if dev.type == 2 then
+            if dev.type == 2 and not foundWireless then
                 wifiButton.dev = dev.path
                 if dev.connection == "/" then
                     -- Not connected to a network
@@ -171,6 +178,7 @@ function module.refreshButtons(wifiButton, wiredButton)
                                     wifiButton.specificObj = ap
                                     wifiButton.setArg("enabled", true)
                                 end)
+                                break
                             end
                         end
 
@@ -190,18 +198,51 @@ function module.refreshButtons(wifiButton, wiredButton)
                 end
 
                 wifiButton.setArg("disable_right", false)
-                found = true
-                break
-            end
+                foundWireless = true
+            elseif dev.type == 1 and not foundWired then
+                wiredButton.dev = dev.path
+                if dev.connection == "/" then
+                    -- Not connected to a network
+                    wiredButton.setArg("state", false)
+                    module.getConnections(function (connections)
+                        local found = false
 
-            if not found then
-                wifiButton.setArg("enabled", false)
-                wifiButton.setArg("disable_right", true)
+                        for _, conn in ipairs(connections) do
+                            if conn.type == "802-3-ethernet" then
+                                found = true
+                                wiredButton.conn = conn.path
+                                break
+                            end
+                        end
+
+                        --- I should probably configure a new wired connection in this case
+                        if not found then
+                            wiredButton.setArg("enabled", false)
+                        end
+                    end)
+                else
+                    -- Save current connection as connection of ethernet button
+                    wiredButton.setArg("state", true)
+                    wiredButton.activeConn = dev.connection
+                    module.readProperties(dev.connection, "org.freedesktop.NetworkManager.Connection.Active", function (properties)
+                        wiredButton.conn = properties:lookup_value("Connection"):get_string()
+                    end)
+                end
+
+                wiredButton.setArg("enabled", true)
+                foundWired = true
             end
         end
-    end)
 
-    wiredButton.specificObj = "/"
+        if not foundWireless then
+            wifiButton.setArg("enabled", false)
+            wifiButton.setArg("disable_right", true)
+        end
+
+        if not foundWired then
+            wiredButton.setArg("enabled", false)
+        end
+    end)
 end
 
 return module
