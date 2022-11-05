@@ -7,6 +7,8 @@ local powermenuWidget = require("widgets.powermenu")
 local wifiPopup = require("widgets.wifipopup")
 local placesWidget = require("widgets.places")
 
+local networkDev = require("devices.network")
+
 local module = {}
 
 local function widgetContainer(widget)
@@ -30,26 +32,7 @@ local function widgetContainer(widget)
 end
 
 local function refreshButtons()
-    -- Refresh wifi button
-    Awful.spawn.easy_async("nmcli -g wifi-hw g", function (stdout)
-        if stdout:sub(1, -2) == "enabled" then
-            Awful.spawn.easy_async("nmcli -g name,type con", function (stdout)
-                local name = stdout:match("([%w%d _%-]+):802%-11%-wireless")
-                if name then
-                    module.control.controlButtons.wifi.setArg("enabled", true)
-                    Awful.spawn.easy_async("nmcli -g type,state dev", function (stdout)
-                        local state = stdout:match("wifi:(%w+)")
-                        module.control.controlButtons.wifi.setArg("state", state == "connected")
-                    end)
-                    if module.control.controlButtons.wifi.conn == nil then
-                        module.control.controlButtons.wifi.conn = name
-                    end
-                end
-            end)
-        else
-            module.control.controlButtons.wifi.setArg("enabled", false)
-        end
-    end)
+    networkDev.refreshButtons(module.control.controlButtons.wifi, module.control.controlButtons.network)
 
     -- Refresh sound buttons
     Awful.spawn.easy_async("amixer -D pulse get Master", function (stdout, stderr, code, reason)
@@ -76,7 +59,7 @@ local function refreshButtons()
 end
 
 local buttonRefreshTimer = Gears.timer {
-    timeout = 1.5,
+    timeout = 0.5,
     autostart = false,
     single_shot = true,
     callback = refreshButtons
@@ -215,6 +198,7 @@ local function toggleMainMenu(screen)
     else
         module.mainMenu.visible = true
         buttonRefreshTimer:start()
+        --refreshButtons()
         module.keyGrabber:start()
     end
 end

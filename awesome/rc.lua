@@ -51,6 +51,10 @@ end
 -- Load theme
 Theme.init(config.themePath.."/theme.lua")
 
+-- Initilize some utility stuff
+local initializer = coroutine.create(utility.dbus.init)
+coroutine.resume(initializer)
+
 -- Enabled layouts
 Awful.layout.layouts = {
     Awful.layout.suit.fair
@@ -60,7 +64,6 @@ menubar.utils.terminal = config.terminal
 client.maximized = false
 
 posix.setenv("QT_QPA_PLATFORMTHEME", "qt5ct")
--- posix.setenv("QT_STYLE_OVERRIDE", "kvantum")
 posix.setenv("PATH", os.getenv("PATH")..":/home/patryk/.cargo/bin:/var/lib/snapd/snap/bin:/home/patryk/.local/bin")
 
 Awful.spawn("setxkbmap -layout \"pl,us\"")

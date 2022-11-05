@@ -2,6 +2,7 @@ local rubato = require("rubato")
 
 local utility = require("utility")
 local easing = require("easing")
+local networkDev = require("devices.network")
 
 local module = {}
 local cache = nil
@@ -78,7 +79,7 @@ local function makeButton(args)
             end
         end),
         Awful.button({}, 3, function ()
-            if args.handler_press_right then
+            if not args.disable_right and args.handler_press_right then
                 args.handler_press_right(button, args.state, args.enabled)
             end
         end)
@@ -117,14 +118,46 @@ local function toggleNetwork(button, state)
         return
     end
 
-    local stateStr = "up"
-    if not state then
-        stateStr = "down"
+    if state then
+        -- Turn on
+        utility.dbus.callMethodWithReply({
+            bus = "system",
+            destination = "org.freedesktop.NetworkManager",
+            object = "/org/freedesktop/NetworkManager",
+            interface = "org.freedesktop.NetworkManager",
+            func = "ActivateConnection",
+            args = { { type = "o", value = button.conn }, { type = "o", value = button.dev }, { type = "o", value = button.specificObj } }
+        }, function (result)
+            local value = result:get_child_value(0):get_string()
+            button.activeConn = value
+            button.setArg("state", state)
+        end)
+    else
+        -- Turn off (Maybe use DeactivateConnection @NetworkManager)
+        utility.dbus.callMethodWithReply({
+            bus = "system",
+            destination = "org.freedesktop.NetworkManager",
+            object = button.dev,
+            interface = "org.freedesktop.NetworkManager.Device",
+            func = "Disconnect"
+        }, function ()
+            button.activeConn = nil
+            button.setArg("state", state)
+        end)
     end
+    --button.setArg("state", not state)
+    --if not button.conn then
+    --    return
+    --end
 
-    Awful.spawn.easy_async("nmcli con "..stateStr.." '"..button.conn.."'", function ()
-        button.setArg("state", state)
-    end)
+    --local stateStr = "up"
+    --if not state then
+    --    stateStr = "down"
+    --end
+
+    --Awful.spawn.easy_async("nmcli con "..stateStr.." '"..button.conn.."'", function ()
+    --    button.setArg("state", state)
+    --end)
 end
 
 function module.make()
@@ -141,38 +174,38 @@ function module.make()
         microphone = makeButton({ icon = "microphone", enabled = false })
     }
 
-    Awful.spawn.easy_async("nmcli -g connection,type,state d", function (stdout, stderr, reason, code)
-        local wiredConnection, state = stdout:match("([%w%s]+):ethernet:(%w+)")
-        if wiredConnection then
-            buttons.network.conn = wiredConnection
-            buttons.network.stat = false
-            if state == "connected" then
-                buttons.network.stat = true
-            end
-            buttons.network.setArg("enabled", true)
-            buttons.network.setArg("state", buttons.network.stat)
-        end
-
-        local wirelessConnection, state = stdout:match("([%w_%- ]+):wifi:(%w+)")
-        if wirelessConnection then
-            if wirelessConnection == "" then
-                buttons.wifi.conn = nil
-                buttons.wifi.stat = false
-                buttons.wifi.setArg("enabled", false)
-                buttons.wifi.setArg("state", false)
-            else
-                buttons.wifi.conn = wirelessConnection
-                buttons.wifi.stat = false
-                if state == "connected" then
-                    buttons.wifi.stat = true
-                end
-                buttons.wifi.setArg("enabled", true)
-                buttons.wifi.setArg("state", buttons.wifi.stat)
-            end
-        else
-            buttons.wifi.setArg("enabled", false)
-        end
-    end)
+--    Awful.spawn.easy_async("nmcli -g connection,type,state d", function (stdout, stderr, reason, code)
+--        local wiredConnection, state = stdout:match("([%w%s]+):ethernet:(%w+)")
+--        if wiredConnection then
+--            buttons.network.conn = wiredConnection
+--            buttons.network.stat = false
+--            if state == "connected" then
+--                buttons.network.stat = true
+--            end
+--            buttons.network.setArg("enabled", true)
+--            buttons.network.setArg("state", buttons.network.stat)
+--        end
+--
+--        local wirelessConnection, state = stdout:match("([%w_%- ]+):wifi:(%w+)")
+--        if wirelessConnection then
+--            if wirelessConnection == "" then
+--                buttons.wifi.conn = nil
+--                buttons.wifi.stat = false
+--                buttons.wifi.setArg("enabled", false)
+--                buttons.wifi.setArg("state", false)
+--            else
+--                buttons.wifi.conn = wirelessConnection
+--                buttons.wifi.stat = false
+--                if state == "connected" then
+--                    buttons.wifi.stat = true
+--                end
+--                buttons.wifi.setArg("enabled", true)
+--                buttons.wifi.setArg("state", buttons.wifi.stat)
+--            end
+--        else
+--            buttons.wifi.setArg("enabled", false)
+--        end
+--    end)
 
     local widget = Wibox.widget {
         layout = Wibox.layout.grid,

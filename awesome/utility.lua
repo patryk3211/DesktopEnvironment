@@ -3,6 +3,7 @@ local rubato = require("rubato")
 local easing = require("easing")
 
 local module = {}
+module.dbus = require("dbus")
 
 local svgCache = {}
 
@@ -34,27 +35,6 @@ function module.colorSvg(svg, color)
     cacheEntry = Gears.color.recolor_image(svg, color)
     svgCache[id] = cacheEntry
     return cacheEntry
-end
-
---- Returns the first dbus destination for a specified prefix
----@param prefix string
----@param callback function
-function module.getDbusTarget(prefix, callback)
-    Awful.spawn.easy_async("qdbus", function (stdout, stderr, reason, code)
-        local mpStart = stdout:find(prefix)
-        if mpStart == nil then
-            return
-        end
-
-        local lineEnd = stdout:find("\n", mpStart)
-        if lineEnd == nil then
-            lineEnd = stdout:len()
-        else
-            lineEnd = lineEnd - 1
-        end
-
-        callback(stdout:sub(mpStart, lineEnd))
-    end)
 end
 
 --- Spawns the process only if it is not already running on this user
@@ -201,6 +181,14 @@ function module.memoryUsage()
     local nowUsage = collectgarbage("count")
     module.notifyInfo("Memory Usage", tostring(nowUsage - lastUsage))
     lastUsage = nowUsage
+end
+
+function module.dumpTable(t)
+    local res = ""
+    for k, v in pairs(t) do
+        res = res.."'"..tostring(k).."'='"..tostring(v).."'\n"
+    end
+    module.notifyInfo("Object Dump", res)
 end
 
 return module

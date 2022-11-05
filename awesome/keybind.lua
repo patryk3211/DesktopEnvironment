@@ -4,8 +4,13 @@ local utility = require("utility")
 local module = {}
 
 local function mediaPlayPause()
-    utility.getDbusTarget("org.mpris.MediaPlayer2", function (target)
-        Awful.spawn("dbus-send --print-reply --dest="..target.." /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
+    utility.dbus.getTarget("org.mpris.MediaPlayer2", function (target)
+        utility.dbus.callMethod({
+            destination = target,
+            object = "/org/mpris/MediaPlayer2",
+            interface = "org.mpris.MediaPlayer2.Player",
+            func = "PlayPause"
+        })
     end)
 end
 

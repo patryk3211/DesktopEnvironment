@@ -19,7 +19,7 @@ function module.makeRules()
             }
         },
         { -- Force firefox on tag 2
-            rule = { instance = "firefox" },
+            rule = { class = "firefox" },
             properties = {
                 screen = 1,
                 tag = config.groups[2].groupName
