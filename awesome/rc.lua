@@ -55,6 +55,8 @@ Theme.init(config.themePath.."/theme.lua")
 local initializer = coroutine.create(utility.dbus.init)
 coroutine.resume(initializer)
 
+require("devices.battery").init()
+
 -- Enabled layouts
 Awful.layout.layouts = {
     Awful.layout.suit.fair
@@ -89,3 +91,8 @@ keys.bindGlobal()
 rules.makeRules()
 
 signals.connect()
+
+for _, cb in ipairs(utility.postInit) do
+    cb()
+end
+utility.postInit = nil

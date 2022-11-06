@@ -63,9 +63,43 @@ function module.callMethodWithReply(args, callback)
     bus:send_message_with_reply(message, gio.DBusSendMessageFlags.NONE, 1000, nil, function (source, res)
         local msg = bus:send_message_with_reply_finish(res)
         if callback then
-            callback(msg:get_body())
+            callback(msg:get_body():get_child_value(0))
         end
     end)
+end
+
+--- Call a DBUS Method
+---@param args table Table of arguments
+--- bus = 'system/session', default: session<br>
+--- name = DBUS name<br>
+--- object = DBUS object path<br>
+--- interface = DBUS interface<br>
+--- func = DBUS function<br>
+--- destination = DBUS destination<br>
+--- args = DBUS function args ([{ string: type, any: value }, ...])
+function module.callMethodWithReplySync(args)
+    local bus = sessionBus
+    if args.bus == "system" then
+        bus = systemBus
+    end
+
+    local message = gio.DBusMessage.new_method_call(args.name, args.object, args.interface, args.func)
+    message:set_destination(args.destination)
+
+    if args.args then
+        local typeString = "("
+        local valueArray = {}
+        for _, entry in ipairs(args.args) do
+            typeString = typeString..entry.type
+            valueArray[#valueArray+1] = entry.value
+        end
+        typeString = typeString..")"
+
+        message:set_body(glib.Variant(typeString, valueArray))
+    end
+
+    local msg = bus:send_message_with_reply_sync(message, gio.DBusSendMessageFlags.NONE, 1000, nil)
+    return msg:get_body():get_child_value(0)
 end
 
 --- Returns the first dbus destination for a specified prefix
@@ -112,7 +146,7 @@ function module.getProperty(args, callback)
     bus:send_message_with_reply(message, gio.DBusSendMessageFlags.NONE, 1000, nil, function (source, res)
         local msg = bus:send_message_with_reply_finish(res)
         if callback then
-            callback(msg:get_body())
+            callback(msg:get_body():get_child_value(0))
         end
     end)
 end
@@ -142,6 +176,28 @@ function module.getProperties(args, callback)
             callback(msg:get_body():get_child_value(0))
         end
     end)
+end
+
+--- Get properties of a DBus object
+---@param args table Table of arguments
+--- bus = 'system/session', default: session<br>
+--- name = DBUS name<br>
+--- object = DBUS object path<br>
+--- destination = DBUS destination<br>
+--- interface = DBUS interface<br>
+function module.getPropertiesSync(args)
+    local bus = sessionBus
+    if args.bus == "system" then
+        bus = systemBus
+    end
+
+    local message = gio.DBusMessage.new_method_call(args.name, args.object, "org.freedesktop.DBus.Properties", "GetAll")
+    message:set_destination(args.destination)
+    message:set_body(glib.Variant("(s)", {
+        args.interface
+    }))
+    local msg = bus:send_message_with_reply_sync(message, gio.DBusSendMessageFlags.NONE, 1000, nil)
+    return msg:get_body():get_child_value(0)
 end
 
 return module

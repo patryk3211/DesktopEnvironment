@@ -11,7 +11,7 @@ function module.wifiHardwareEnabled(callback)
         property = "WirelessHardwareEnabled"
     }, function (msg)
         if callback then
-            local value = msg:get_child_value(0):get_variant():get_boolean()
+            local value = msg:get_variant():get_boolean()
             callback(value)
         end
     end)
@@ -27,11 +27,10 @@ function module.getDevices(callback)
         interface = "org.freedesktop.NetworkManager",
         func = "GetAllDevices"
     }, function (msg)
-        local value = msg:get_child_value(0)
-        local count = value:n_children()
+        local count = msg:n_children()
 
         for i = 0, count - 1 do
-            local entry = value:get_child_value(i)
+            local entry = msg:get_child_value(i)
             local devLoc = entry:get_string()
 
             utility.dbus.getProperties({
@@ -67,12 +66,10 @@ function module.getConnections(callback)
         interface = "org.freedesktop.NetworkManager.Settings",
         func = "ListConnections"
     }, function (msg)
-        local value = msg:get_child_value(0)
-
-        local count = value:n_children()
+        local count = msg:n_children()
 
         for i = 0, count - 1 do
-            local entry = value:get_child_value(i)
+            local entry = msg:get_child_value(i)
             local connLoc = entry:get_string()
 
             utility.dbus.callMethodWithReply({
@@ -82,8 +79,7 @@ function module.getConnections(callback)
                 interface = "org.freedesktop.NetworkManager.Settings.Connection",
                 func = "GetSettings"
             }, function (msg)
-                local value = msg:get_child_value(0)
-                local connect = value:lookup_value("connection")
+                local connect = msg:lookup_value("connection")
 
                 local obj = {
                     type = connect:lookup_value("type"):get_string(),
@@ -122,11 +118,10 @@ function module.findAP(device, ssidToFind, callback)
         interface = "org.freedesktop.NetworkManager.Device.Wireless",
         func = "GetAccessPoints"
     }, function (msg)
-        local value = msg:get_child_value(0)
-        local count = value:n_children()
+        local count = msg:n_children()
 
         for i = 0, count - 1 do
-            local entry = value:get_child_value(i):get_string()
+            local entry = msg:get_child_value(i):get_string()
             module.readProperties(entry, "org.freedesktop.NetworkManager.AccessPoint", function (properties)
                 local ssid = properties:lookup_value("Ssid")
 

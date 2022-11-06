@@ -5,6 +5,7 @@ local mainmenu = require("mainmenu")
 
 local calendar = require("widgets.calendar")
 local usage = require("widgets.usage")
+local battery = require("widgets.battery")
 
 local module = {}
 
@@ -51,27 +52,34 @@ local infoBar = nil
 local function makeInfoBar()
     -- Make only one info bar for all screens
     if not infoBar then
-        infoBar = Wibox.widget {
-            layout = Wibox.layout.fixed.horizontal,
-            makeSystray(),
-            Wibox.widget.imagebox(utility.colorSvg(Theme.leftTriangle, Theme.info_bg)),
-            {
+        infoBar = Wibox.layout.fixed.horizontal()
+        infoBar:add(makeSystray())
+
+        local first = true
+
+        local function addSegment(segment, bg, fg)
+            if not first then
+                local lastSegment = infoBar.children[#infoBar.children]
+                lastSegment.children[1]:add(Wibox.widget.imagebox(Theme.getIcon(Theme.leftTriangle, bg)))
+            else
+                infoBar:add(Wibox.widget.imagebox(Theme.getIcon(Theme.leftTriangle, bg)))
+                first = false
+            end
+            infoBar:add(Wibox.widget {
                 widget = Wibox.container.background,
-                bg = Theme.info_bg,
-                fg = Theme.info_fg,
-                {
-                    layout = Wibox.layout.fixed.horizontal,
-                    usage.make(),
-                    Wibox.widget.imagebox(utility.colorSvg(Theme.leftTriangle, Theme.clock_bg)),
-                }
-            },
-            {
-                widget = Wibox.container.background,
-                bg = Theme.clock_bg,
-                fg = Theme.clock_fg,
-                calendar.make()
-            }
-        }
+                bg = bg,
+                fg = fg,
+                segment
+            })
+        end
+
+        addSegment(Wibox.layout.fixed.horizontal(usage.make()), Theme.info_bg, Theme.info_fg)
+
+        if battery.present() then
+            addSegment(battery.make(), Theme.battery_bar_bg, Theme.battery_bar_fg)
+        end
+
+        addSegment(Wibox.layout.fixed.horizontal(calendar.make()), Theme.clock_bg, Theme.clock_fg)
     end
     return infoBar
 end
@@ -95,9 +103,9 @@ local function makeTopBar(screen)
             Wibox.container.margin(menuIcon, 0, 16, 0, 0),
             {
                 layout = Wibox.layout.fixed.horizontal,
-                Wibox.widget.imagebox(utility.colorSvg(Theme.leftTriangle, Theme.taglist_bg)),
+                Wibox.widget.imagebox(Theme.getIcon(Theme.leftTriangle, Theme.taglist_bg)),
                 Wibox.container.margin(screen.taglist, 8, 8, 0, 0, Theme.taglist_bg),
-                Wibox.widget.imagebox(utility.colorSvg(Theme.rightTriangle, Theme.taglist_bg))
+                Wibox.widget.imagebox(Theme.getIcon(Theme.rightTriangle, Theme.taglist_bg))
             }
         },
         nil, -- Middle
@@ -150,5 +158,14 @@ function module.makeScreen(screen)
     -- View tag 1 by default
     screen.tags[1]:view_only()
 end
+
+--utility.addPostInitCallback(function ()
+--    config = nil
+--    keys = nil
+--    mainmenu = nil
+--    calendar = nil
+--    usage = nil
+--    battery = nil
+--end)
 
 return module

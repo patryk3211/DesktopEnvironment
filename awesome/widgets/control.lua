@@ -128,7 +128,7 @@ local function toggleNetwork(button, state)
             func = "ActivateConnection",
             args = { { type = "o", value = button.conn }, { type = "o", value = button.dev }, { type = "o", value = button.specificObj } }
         }, function (result)
-            local value = result:get_child_value(0):get_string()
+            local value = result:get_string()
             button.activeConn = value
             button.setArg("state", state)
         end)

@@ -5,6 +5,8 @@ local easing = require("easing")
 local module = {}
 module.dbus = require("dbus")
 
+module.postInit = {}
+
 local svgCache = {}
 
 function module.notifyInfo(title, text)
@@ -189,6 +191,10 @@ function module.dumpTable(t)
         res = res.."'"..tostring(k).."'='"..tostring(v).."'\n"
     end
     module.notifyInfo("Object Dump", res)
+end
+
+function module.addPostInitCallback(callback)
+    module.postInit[#module.postInit+1] = callback
 end
 
 return module

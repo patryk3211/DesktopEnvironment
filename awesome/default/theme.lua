@@ -64,6 +64,16 @@ theme.info_font = "Hack Nerd Regular 11"
 theme.cpu_color = "#ffffff"
 theme.ram_color = "#ffffff"
 
+-- Battery info style
+theme.battery_bar_bg = "#202020"
+theme.battery_bar_fg = "#ffffff"
+
+theme.battery_icon_unknown = "battery/empty"
+theme.battery_warning_level = 0.05
+theme.battery_warning_color = "#ff0000"
+theme.battery_normal_color = "#ffffff"
+theme.battery_charging_color = "#00ff00"
+
 -- Main menu
 theme.mm_container_bg = "#181818"
 theme.mm_container_margin = 10
@@ -188,8 +198,8 @@ theme.getIcon = function (name, color)
 end
 
 theme.mainMenuIcon = theme.getIcon("arch")
-theme.leftTriangle = theme.getIcon("triangle-left-h")
-theme.rightTriangle = theme.getIcon("triangle-right-h")
+theme.leftTriangle = "triangle-left-h" --theme.getIcon("triangle-left-h")
+theme.rightTriangle = "triangle-right-h" --theme.getIcon("triangle-right-h")
 
 -- Define the icon theme for application icons. If not set then the icons
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
