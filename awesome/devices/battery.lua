@@ -52,15 +52,16 @@ function module.exists()
 end
 
 function module.getChargeFraction()
-    return module.batteryProperties:lookup_value("Percentage"):get_double()
+    local value = module.batteryProperties:lookup_value("Percentage"):get_double()
+    return value / 100
 end
 
 function module.getTimeToCharge()
-    return module.batteryProperties:lookup_value("TimeToFull"):get_uint64()
+    return module.batteryProperties:lookup_value("TimeToFull"):get_int64()
 end
 
 function module.getTimeToEmpty()
-    return module.batteryProperties:lookup_value("TimeToEmpty"):get_uint64()
+    return module.batteryProperties:lookup_value("TimeToEmpty"):get_int64()
 end
 
 function module.addUpdateCallback(callback)

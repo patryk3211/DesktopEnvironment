@@ -71,7 +71,7 @@ posix.setenv("PATH", os.getenv("PATH")..":/home/patryk/.cargo/bin:/var/lib/snapd
 Awful.spawn("setxkbmap -layout \"pl,us\"")
 Awful.spawn("wmname LG3D")
 utility.spawnOne("picom")
-utility.spawnOne("xss-lock /home/patryk/.config/awesome/lock.sh")
+utility.spawnOne("xss-lock dm-tool lock")
 
 collectgarbage("setstepmul", 400)
 

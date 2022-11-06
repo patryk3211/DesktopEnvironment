@@ -15,10 +15,9 @@ Packages that have to be downloaded to run this setup
 - LuaPosix - Lua library for C library bindings, download from luarocks with `luarocks --lua-version 5.3 install luaposix`
 - kitty - The terminal emulator used, Arch package: [`kitty`](https://archlinux.org/packages/community/x86_64/kitty)
 - fish - The shell used, Arch package: [`fish`](https://archlinux.org/packages/community/x86_64/fish), you will also have to download [Oh My Fish](https://github.com/oh-my-fish/oh-my-fish#installation) and install a theme, I use [agnoster](https://github.com/oh-my-fish/theme-agnoster)
-- i3lock - Lock screen used, you will have to compile it from an aur repository: [`i3lock-color`](https://aur.archlinux.org/packages/i3lock-color)
 - xss-lock - Allows i3lock to be connected to Xorg locking mechanism, Arch package: [`xss-lock`](https://archlinux.org/packages/community/x86_64/xss-lock)
 - lxappearance - Used to setup GTK theme and icons, Arch package: [`lxappearance`](https://archlinux.org/packages/community/x86_64/lxappearance)
-- ly - Display manager used, Aur package: [`ly`](https://aur.archlinux.org/packages/ly)
+- lightdm - Lock screen / Display manager with the Aether theme, [installation, here](https://github.com/NoiSek/Aether#installation)
 - alsa-utils - Used for controlling audio devices, Arch package: [`alsa-utils`](https://archlinux.org/packages/extra/x86_64/alsa-utils) + [`alsa-plugins`](https://archlinux.org/packages/extra/x86_64/alsa-plugins)
 - NetworkManager - Used for managing all kinds of network connections, Arch package: [`networkmanager`](https://archlinux.org/packages/extra/x86_64/networkmanager)
 

@@ -9,7 +9,9 @@ end
 
 function module.make()
     local icon = Wibox.widget.imagebox(Theme.getIcon(Theme.battery_icon_unknown, Theme.battery_bar_fg))
-    local text = Wibox.widget.textbox("????%")
+    local text = Wibox.widget.textbox("???%")
+    text.align = "right"
+
     local fill = Wibox.widget.base.make_widget()
     fill.color = Gears.color("#ff0000")
     fill.fraction = 1
@@ -56,9 +58,13 @@ function module.make()
         },
         {
             widget = Wibox.container.constraint,
-            width = 50,
+            width = 45,
             strategy = "exact",
-            text
+            {
+                widget = Wibox.container.margin,
+                right = 5,
+                text
+            }
         }
     }
 
@@ -104,16 +110,7 @@ function module.make()
         -- Update battery icon
         local fraction = batteryDev.getChargeFraction()
 
-        local formatString = "????%%"
-        if fraction == 1 then
-            formatString = "100%%"
-        elseif fraction >= 0.1 then
-            formatString = "%.1f%%"
-        else
-            formatString = "%.2f%%"
-        end
-
-        text.text = string.format(formatString, fraction * 100)
+        text.text = string.format("%d%%", fraction * 100)
         fill.fraction = fraction
 
         if batteryDev.isCharging() then
@@ -125,6 +122,8 @@ function module.make()
                 fill.color = Gears.color(Theme.battery_normal_color)
             end
         end
+
+        widget:emit_signal("widget::redraw_needed")
     end)
 
     return widget
