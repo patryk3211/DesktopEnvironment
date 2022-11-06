@@ -22,21 +22,28 @@ function module.makeRules()
             rule = { class = "firefox" },
             properties = {
                 screen = 1,
-                tag = config.groups[2].groupName
+                tag = config.groups[4].groupName
             }
         },
         { -- Force discord on tag 3
             rule = { class = "discord" },
             properties = {
                 screen = 1,
-                tag = config.groups[3].groupName
+                tag = config.groups[6].groupName
             }
         },
         {
             rule = { instance = "keepassxc" },
             properties = {
                 screen = 1,
-                tag = config.groups[4].groupName
+                tag = config.groups[7].groupName
+            }
+        },
+        {
+            rule = { class = "Steam" },
+            properties = {
+                screen = 1,
+                tag = config.groups[8].groupName
             }
         }
     }

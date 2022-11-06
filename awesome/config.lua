@@ -11,32 +11,57 @@ config.iconPath = config.themePath.."/icons"
 
 config.groups = {
     {
-        groupName = utf8.char(0xf120),
+        groupName = utf8.char(0xf878),
         displayName = "Main",
-        program = nil
+        program = nil,
+        hideEmpty = false
+    },
+    {
+        groupName = utf8.char(0xf9f8),
+        displayName = "Second Tag",
+        program = nil,
+        hideEmpty = true
+    },
+    {
+        groupName = utf8.char(0xf9f8),
+        displayName = "Third Tag",
+        program = nil,
+        hideEmpty = true
     },
     {
         groupName = utf8.char(0xf738),
         displayName = "Firefox",
         program = "firefox",
-        spawnOne = true
+        spawnOne = true,
+        hideEmpty = true
+    },
+    {
+        groupName = utf8.char(0xf120),
+        displayName = "Terminal",
+        program = "kitty",
+        spawnOne = false,
+        hideEmpty = true
     },
     {
         groupName = utf8.char(0xfb6e),
         displayName = "Discord",
         program = "discord",
-        spawnOne = false
+        spawnOne = false,
+        hideEmpty = true
     },
     {
         groupName = utf8.char(0xf43d),
         displayName = "Keepass",
         program = "keepassxc",
-        spawnOne = false
+        spawnOne = false,
+        hideEmpty = true
     },
     {
-        groupName = utf8.char(0xf108),
-        displayName = "Other",
-        program = nil
+        groupName = utf8.char(0xf9d2),
+        displayName = "Steam",
+        program = "steam",
+        hideEmpty = true,
+        spawnOne = false
     }
 }
 config.groupCount = #config.groups

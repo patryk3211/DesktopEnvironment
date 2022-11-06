@@ -129,7 +129,14 @@ function module.makeScreen(screen)
     -- Create the tag list
     screen.taglist = Awful.widget.taglist {
         screen = screen,
-        filter  = Awful.widget.taglist.filter.all,
+        filter  = function (t)
+            local hide = config.groups[t.index].hideEmpty
+            if not hide then
+                return true
+            end
+
+            return t.selected or #t:clients() ~= 0
+        end,
         buttons = keys.taglistButtons,
 
         widget_template = {
