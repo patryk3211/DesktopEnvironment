@@ -19,11 +19,11 @@ end
 
 --- Sets the wallpaper on screen from theme's wallpaper parameter
 ---@param screen unknown
-function module.resetWallpaper(screen)
-    if Theme.wallpaper then
-        Gears.wallpaper.maximized(Theme.wallpaper, screen, true)
-    end
-end
+--function module.resetWallpaper(screen)
+--    if Theme.wallpaper then
+--        Gears.wallpaper.maximized(Theme.wallpaper, screen, true)
+--    end
+--end
 
 --- Changes the color of an image and stores it in cache
 ---@param svg string Path to an image

@@ -4,7 +4,7 @@ This is my first custom made desktop configuration for the awesome window manage
 
 ## Packages
 Packages that have to be downloaded to run this setup
-- AwesomeWM - The window manager used, Arch package: [`awesome`](https://archlinux.org/packages/community/x86_64/awesome)
+- AwesomeWM - The window manager used, Aur package: [`awesome-git`](https://aur.archlinux.org/packages/awesome-git)
 - Picom - The compositor, Arch package: [`picom`](https://archlinux.org/packages/community/x86_64/picom)
 - Rofi - The app launcher, Arch package: [`rofi`](https://archlinux.org/packages/community/x86_64/rofi)
 - Materia GTK - Materia theme for GTK applications, Arch package: [`materia-gtk-theme`](https://archlinux.org/packages/community/any/materia-gtk-theme)

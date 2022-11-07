@@ -15,7 +15,7 @@ local function mediaPlayPause()
 end
 
 function module.bindGlobal()
-    local globalKeys = Gears.table.join(
+    Awful.keyboard.append_global_keybindings({
         Awful.key({ config.modKey }, "n", function ()
             local screen = Awful.screen.focused()
             screen.prompt()
@@ -50,44 +50,62 @@ function module.bindGlobal()
         Awful.key({ config.modKey }, "s", function ()
             Awful.tag.incmwfact(-0.05)
         end, { description = "Descrease master width factor" })
-    )
+    })
 
-    local keyBindCount = math.min(config.groupCount, 9)
-    for i = 1, keyBindCount do
-        globalKeys = Gears.table.join(globalKeys,
-            Awful.key({ config.modKey }, tostring(i), function ()
+    Awful.keyboard.append_global_keybindings({
+        Awful.key {
+            modifiers = { config.modKey },
+            keygroup = "numrow",
+            description = "Switch to tag",
+            on_press = function (index)
                 local screen = Awful.screen.focused()
-                local tag = screen.tags[i]
-                if tag then
-                    tag:view_only()
-                end
-            end, { description = "Switch to tag #"..i }),
-            Awful.key({ config.modKey, "Control" }, tostring(i), function ()
+                local tag = screen.tags[index]
+                if tag then tag:view_only() end
+            end
+        },
+        Awful.key {
+            modifiers = { config.modKey, "Shift" },
+            keygroup = "numrow",
+            description = "Move client in focus to tag",
+            on_press = function (index)
                 local screen = Awful.screen.focused()
-                local tag = screen.tags[i]
-                if tag then
-                    Awful.tag.viewtoggle(tag)
-                end
-            end, { description = "Toggle tag #"..i }),
-            Awful.key({ config.modKey, "Shift" }, tostring(i), function ()
-                local screen = Awful.screen.focused()
-                local tag = screen.tags[i]
+                local tag = screen.tags[index]
                 if tag and client.focus then
                     client.focus:move_to_tag(tag)
                 end
-            end, { description = "Move client to tag #"..i }),
-            Awful.key({ config.modKey, "Shift", "Control" }, tostring(i), function ()
+            end
+        },
+        Awful.key {
+            modifiers = { config.modKey, "Control" },
+            keygroup = "numrow",
+            description = "Toggle visibility of tag",
+            on_press = function (index)
                 local screen = Awful.screen.focused()
-                local tag = screen.tags[i]
+                local tag = screen.tags[index]
+                if tag then Awful.tag.viewtoggle(tag) end
+            end
+        },
+        Awful.key {
+            modifiers = { config.modKey, "Shift", "Control" },
+            keygroup = "numrow",
+            description = "Move all visible clients to tag",
+            on_press = function (index)
+                local screen = Awful.screen.focused()
+                local tag = screen.tags[index]
                 for _, c in ipairs(screen.all_clients) do
                     if c:isvisible() then
                         c:move_to_tag(tag)
                     end
                 end
-            end, { description = "Move all visible clients to tag #"..i }),
-            Awful.key({ config.modKey, "Mod1" }, tostring(i), function ()
+            end
+        },
+        Awful.key {
+            modifiers = { config.modKey, "Mod1" },
+            keygroup = "numrow",
+            description = "Execute command of tag",
+            on_press = function (index)
                 local screen = Awful.screen.focused()
-                local tag = screen.tags[i]
+                local tag = screen.tags[index]
                 if tag then
                     local configEntry = config.groups[tag.index]
                     local exec = configEntry.program
@@ -99,43 +117,45 @@ function module.bindGlobal()
                         end
                     end
                 end
+            end
+        }
+    })
+
+    client.connect_signal("request::default_mousebindings", function ()
+        Awful.mouse.append_client_mousebindings({
+            Awful.button({}, 1, function (client)
+                client:emit_signal("request::activate", "mouse_click", { raise = true })
+            end),
+            Awful.button({}, 3, function (client)
+                client:emit_signal("request::activate", "mouse_click", { raise = true })
+            end),
+            Awful.button({ config.modKey }, 1, function (client)
+                client:emit_signal("request::activate", "mouse_click", { raise = true })
+                Awful.mouse.client.move(client)
+            end),
+            Awful.button({ config.modKey }, 3, function (client)
+                client:emit_signal("request::activate", "mouse_click", { raise = true })
+                Awful.mouse.client.resize(client)
             end)
-        )
-    end
-
-    root.keys(globalKeys)
-end
-
-module.clientKeys = Gears.table.join(
-    Awful.key({ config.modKey }, "q", function (client)
-        client:kill()
-    end, { description = "Close the current window" }),
-    Awful.key({ config.modKey }, "g", function (client)
-        client.maximized = not client.maximized
-        client:raise()
-    end, { description = "Toggle maximize of the current window" }),
-    Awful.key({ config.modKey }, "f", function (client)
-        client.floating  = not client.floating
-        client:raise()
-    end, { description = "Toggle floating of the current window" })
-)
-
-module.clientButtons = Gears.table.join(
-    Awful.button({}, 1, function (client)
-        client:emit_signal("request::activate", "mouse_click", { raise = true })
-    end),
-    Awful.button({}, 3, function (client)
-        client:emit_signal("request::activate", "mouse_click", { raise = true })
-    end),
-    Awful.button({ config.modKey }, 1, function (client)
-        client:emit_signal("request::activate", "mouse_click", { raise = true })
-        Awful.mouse.client.move(client)
-    end),
-    Awful.button({ config.modKey }, 3, function (client)
-        client:emit_signal("request::activate", "mouse_click", { raise = true })
-        Awful.mouse.client.resize(client)
+        })
     end)
-)
+
+    client.connect_signal("request::default_keybindings", function ()
+        Awful.keyboard.append_client_keybindings({
+            Awful.key({ config.modKey }, "q", function (client)
+                client:kill()
+            end, { description = "Close the current window" }),
+            Awful.key({ config.modKey }, "g", function (client)
+                client.maximized = not client.maximized
+                client:raise()
+            end, { description = "Toggle maximize of the current window" }),
+            Awful.key({ config.modKey }, "f", function (client)
+                client.floating  = not client.floating
+                client:raise()
+            end, { description = "Toggle floating of the current window" })
+        })
+    end)
+end
 
 module.taglistButtons = Gears.table.join(
     Awful.button({}, 1, function (tag) tag:view_only() end),

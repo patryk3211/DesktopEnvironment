@@ -116,8 +116,6 @@ end
 
 
 function module.makeScreen(screen)
-    utility.resetWallpaper(screen)
-
     for i, value in ipairs(config.groups) do
         Awful.tag.add(value.groupName, {
             layout = Awful.layout.layouts[1],
@@ -164,6 +162,25 @@ function module.makeScreen(screen)
 
     -- View tag 1 by default
     screen.tags[1]:view_only()
+end
+
+function module.setWallpaper(screen)
+    Awful.wallpaper {
+        screen = screen,
+        widget = {
+            {
+                widget = Wibox.widget.imagebox,
+                upscale = true,
+                downscale = true,
+                image = Theme.wallpaper
+            },
+
+            widget = Wibox.container.tile,
+            valign = "center",
+            halign = "center",
+            tiled = true
+        }
+    }
 end
 
 --utility.addPostInitCallback(function ()

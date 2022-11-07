@@ -87,7 +87,17 @@ function module.makeVertical(callback, value, style)
     end
 
     widget:connect_signal("button::press", function (self, mouseX, mouseY, button)
-        utility.notifyInfo("Press", tostring(button))
+        local state, err = pcall(function()
+            mousegrabber.run(function (mouse)
+                if not mouse.buttons[1] then
+                    return false
+                end
+
+                utility.notifyInfo("Move", "Bruh")
+                return true
+            end, "cursor")
+        end)
+        utility.notifyInfo("Err", tostring(err))
     end)
 
     return widget
