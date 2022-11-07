@@ -62,12 +62,39 @@ ruled.client.connect_signal("request::rules", function ()
     }
 end)
 
+local naughty = require("naughty")
+
 -- Notification rules
 ruled.notification.connect_signal('request::rules', function()
     ruled.notification.append_rule {
         rule = { },
         properties = {
-            screen = Awful.screen.preferred
+            screen = Awful.screen.preferred,
+            timeout = 5,
+            widget_template = {
+                widget = Wibox.container.margin,
+                top = 5,
+                bottom = 5,
+                left = 5,
+                right = 5,
+
+                {
+                    layout = Wibox.layout.fixed.horizontal,
+
+                    {
+                        widget = Wibox.container.constraint,
+                        height = 64,
+                        strategy = "exact",
+                        naughty.widget.icon
+                    },
+                    {
+                        layout = Wibox.layout.fixed.vertical,
+
+                        naughty.widget.title,
+                        naughty.widget.message
+                    }
+                }
+            }
         }
     }
 end)

@@ -127,6 +127,10 @@ theme.mm_places_text_colors = {
 theme.mm_places_entry_color = "#181818"
 theme.mm_places_entry_hover_color = "#202020"
 
+theme.mm_brightness_slider_bg = "#101010"
+theme.mm_brightness_slider_color = "#207bb8"
+theme.mm_brightness_icon_color = "#ffffff"
+
 -- Notification style
 theme.notification_height = 120
 theme.notification_width = 360

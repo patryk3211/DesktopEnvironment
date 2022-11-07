@@ -129,7 +129,7 @@ config.mainmenu_layout = {
         x = 12,
         y = 1,
         width = 1,
-        height = 4,
+        height = 3,
         wrap = true
     }
 }
