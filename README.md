@@ -20,6 +20,7 @@ Packages that have to be downloaded to run this setup
 - lightdm - Lock screen / Display manager with the Aether theme, [installation, here](https://github.com/NoiSek/Aether#installation)
 - alsa-utils - Used for controlling audio devices, Arch package: [`alsa-utils`](https://archlinux.org/packages/extra/x86_64/alsa-utils) + [`alsa-plugins`](https://archlinux.org/packages/extra/x86_64/alsa-plugins)
 - NetworkManager - Used for managing all kinds of network connections, Arch package: [`networkmanager`](https://archlinux.org/packages/extra/x86_64/networkmanager)
+- brightnessctl - Used for adjusting screen brightness, Arch package: [`brightnessctl`](https://archlinux.org/packages/community/x86_64/brightnessctl)
 
 ### Fonts
 - Roboto - Font for the UI of applications, Arch package: [`ttf-roboto`](https://archlinux.org/packages/community/any/ttf-roboto)
