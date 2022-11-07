@@ -6,13 +6,17 @@ local module = {}
 function module.make()
     local sliderObject = slider.makeVertical(function (value)
         -- Value changed
-        Awful.spawn(string.format("brightnessctl set %d", math.floor(value * 100)))
+        Awful.spawn(string.format("brightnessctl set %d%%", math.floor(value * 100)))
     end, 0, { color = Theme.mm_brightness_slider_color, background = Theme.mm_brightness_slider_bg, thickness = 10 })
 
     -- Get initial slider value
-    Awful.spawn.easy_async("brightnessctl get", function (stdout)
-        sliderObject.value = tonumber(stdout) / 100
-        sliderObject:emit_signal("widget::redraw_needed")
+    Awful.spawn.easy_async("brightnessctl get", function (stdout1)
+        Awful.spawn.easy_async("brightnessctl max", function (stdout2)
+            local max = tonumber(stdout2)
+            local value = tonumber(stdout1)
+            sliderObject.value = value / max
+            sliderObject:emit_signal("widget::redraw_needed")
+        end)
     end)
 
     local widget = Wibox.widget {
