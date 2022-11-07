@@ -124,6 +124,13 @@ config.mainmenu_layout = {
         width = 3,
         height = 4,
         wrap = true
+    },
+    brightness = {
+        x = 12,
+        y = 1,
+        width = 1,
+        height = 4,
+        wrap = true
     }
 }
 

@@ -6,6 +6,7 @@ local profileWidget = require("widgets.profile")
 local powermenuWidget = require("widgets.powermenu")
 local wifiPopup = require("widgets.wifipopup")
 local placesWidget = require("widgets.places")
+local brightnessWidget = require("widgets.brightness")
 
 local networkDev = require("devices.network")
 
@@ -118,6 +119,9 @@ local function makeWidget()
 
         -- Make places widget
         module.places = placesWidget.make(openLocation)
+
+        -- Make brightness widget
+        module.brightness = brightnessWidget.make()
 
         -- Make module grid
         module.menuGrid = Wibox.widget {

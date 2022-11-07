@@ -102,8 +102,10 @@ function module.make(connectionChangedCallback)
     header:buttons(Gears.table.join(
         Awful.button({}, 1, function ()
             grabbed = true
+            widget.placement = Awful.placement.under_mouse
         end, function ()
             grabbed = false
+            widget.placement = nil
         end)
     ))
 
@@ -119,8 +121,9 @@ function module.make(connectionChangedCallback)
         if grabbed then
             local dX = x - mX
             local dY = y - mY
-            widget.x = widget.x + dX
-            widget.y = widget.y + dY
+            widget:move_next_to()
+            widget.x = widget.x + widget.width / 2 - mX
+            widget.y = widget.y + widget.height / 2 - mY
         end
     end)
 

@@ -1,59 +1,7 @@
 local utility = require("utility")
+local sliderWidget = require("widgets.slider")
 
 local module = {}
-
-local function makeSlider(callback, value)
-    local bg = Wibox.container.background(Wibox.widget.textbox(), Theme.mm_sound_slider_color)
-    bg.shape = Gears.shape.rounded_rect
-
-    local slider = Wibox.widget {
-        widget = Wibox.widget.slider,
-        bar_color = "transparent",
-        handle_shape = Gears.shape.circle,
-        handle_color = Theme.mm_sound_slider_color,
-        handle_width = 8,
-
-        minimum = 0,
-        maximum = 100,
-        value = value
-    }
-
-    local layout = Wibox.widget {
-        layout = Wibox.layout.stack,
-        {
-            widget = Wibox.container.background,
-            bg = Theme.mm_sound_slider_bg,
-            shape = Gears.shape.rounded_rect,
-
-            Wibox.widget.textbox()
-        },
-        slider,
-        bg
-    }
-
-    local fraction = value / 100
-    slider:connect_signal("property::value", function (obj)
-        fraction = obj.value / 100
-        callback(slider, fraction)
-    end)
-
-    bg._draw = bg.draw
-    bg.draw = function (self, context, cr, width, height)
-        self._draw(self, context, cr, math.min(width * fraction + 8, width), height)
-    end
-
-    slider.setColor = function (color)
-        bg.bg = color
-        slider.handle_color = color
-    end
-
-    slider.setValue = function (new_value)
-        slider.value = new_value * 100
-        fraction = new_value
-    end
-
-    return layout, slider
-end
 
 local function makeBar(icon, callback, value)
     if value == nil then
@@ -64,10 +12,10 @@ local function makeBar(icon, callback, value)
     local text = Wibox.widget.textbox(tostring(multipliedValue).."%")
     text.forced_width = 40
 
-    local widget, slider = makeSlider(function (slider, value)
+    local widget, slider = sliderWidget.make(function (slider, value)
         text.text = tostring(math.floor(value * 100)).."%"
         callback(slider, value)
-    end, multipliedValue)
+    end, multipliedValue, { color = Theme.mm_sound_slider_color, background = Theme.mm_sound_slider_bg })
 
     local layout = Wibox.widget {
         layout = Wibox.layout.align.horizontal,
