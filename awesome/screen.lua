@@ -79,7 +79,7 @@ local function makeInfoBar()
             addSegment(battery.make(), Theme.battery_bar_bg, Theme.battery_bar_fg)
         end
 
-        addSegment(Wibox.layout.fixed.horizontal(calendar.make()), Theme.clock_bg, Theme.clock_fg)
+        addSegment(Wibox.layout.fixed.horizontal(calendar.makeClock()), Theme.clock_bg, Theme.clock_fg)
     end
     return infoBar
 end
