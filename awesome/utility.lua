@@ -3,7 +3,7 @@ local rubato = require("rubato")
 local easing = require("easing")
 
 local module = {}
-module.dbus = require("dbus")
+module.dbus = require("lib.dbus")
 
 module.postInit = {}
 

@@ -127,9 +127,20 @@ theme.mm_places_text_colors = {
 theme.mm_places_entry_color = "#181818"
 theme.mm_places_entry_hover_color = "#202020"
 
+-- Brightness widget style
 theme.mm_brightness_slider_bg = "#101010"
 theme.mm_brightness_slider_color = "#207bb8"
 theme.mm_brightness_icon_color = "#ffffff"
+
+-- Calendar popup style
+theme.calendar_header_bg = "#181818"
+theme.calendar_header_fg = "#ffffff"
+theme.calendar_close_hover_color = "#202020"
+theme.calendar_bg = "#282828"
+theme.calendar_month_fg = "#ffffff"
+theme.calendar_names_weekdays_fg = "#cccccc"
+theme.calendar_days_fg = "#aaaaaa"
+theme.calendar_today_fg = "#dddddd"
 
 -- Notification style
 theme.notification_height = 120

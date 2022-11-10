@@ -10,42 +10,65 @@ function module.makeClock()
                                 10, 10, 6, 6)
     )
 
+    local closeButton = Wibox.widget {
+        widget = Wibox.container.background,
+        {
+            widget = Wibox.container.constraint,
+            height = 24,
+            strategy = "exact",
+            {
+                widget = Wibox.container.margin,
+                top = 2,
+                bottom = 2,
+                left = 4,
+                right = 4,
+
+                Wibox.widget.imagebox(Theme.getIcon("close", "#ffffff"))
+            }
+        }
+    }
+
+    utility.smoothHoverColor(closeButton, Theme.calendar_header_bg, Theme.calendar_close_hover_color)
+
     local calendarPopup = Awful.popup {
         widget = {
             widget = Wibox.container.background,
-            bg = "#000000",
-            forced_width = 280,
+            bg = Theme.calendar_bg,
             {
                 layout = Wibox.layout.fixed.vertical,
                 {
-                    layout = Wibox.layout.align.horizontal,
+                    widget = Wibox.container.background,
+                    bg = Theme.calendar_header_bg,
+                    fg = Theme.calendar_header_fg,
                     {
-                        widget = Wibox.widget.textbox,
-                        text = "Calendar"
-                    },
-                    nil,
-                    {
-                        widget = Wibox.container.place,
-                        forced_height = 24,
+                        layout = Wibox.layout.align.horizontal,
                         {
-                            widget = Wibox.widget.imagebox,
-                            image = Theme.getIcon("close", "#ffffff")
-                        }
+                            widget = Wibox.container.margin,
+                            left = 5,
+                            {
+                                widget = Wibox.widget.textbox,
+                                text = "Calendar"
+                            }
+                        },
+                        nil,
+                        closeButton
                     }
                 },
                 {
                     widget = Wibox.container.margin,
-                    top = 5,
-                    bottom = 5,
-                    left = 5,
-                    right = 5,
+                    top = 4,
+                    bottom = 4,
+                    left = 8,
+                    right = 8,
 
                     module.makeCalendar()
                 }
             }
         },
+
         visible = false,
         ontop = true,
+
         placement = Awful.placement.next_to,
         preferred_position = "bottom",
         preferred_anchor = "front"
@@ -53,18 +76,65 @@ function module.makeClock()
 
     widget:buttons({
         Awful.button({}, 1, function ()
-            calendarPopup.visible = true
-            calendarPopup:move_next_to(widget)
+            if calendarPopup.visible then
+                calendarPopup.visible = false
+            else
+                calendarPopup:move_next_to(widget)
+            end
+        end)
+    })
+
+    closeButton:buttons({
+        Awful.button({}, 1, function ()
+            calendarPopup.visible = false
         end)
     })
 
     return widget
 end
 
+local calendarStyles = nil
+
 function module.makeCalendar()
+    if not calendarStyles then
+        calendarStyles = {
+            header = {
+                fg = Theme.calendar_month_fg
+            },
+            weekday = {
+                fg = Theme.calendar_names_weekdays_fg
+            },
+            focus = {
+                fg = Theme.calendar_today_fg
+            },
+            normal = {
+                fg = Theme.calendar_days_fg
+            }
+        }
+    end
+
     local widget = Wibox.widget {
         widget = Wibox.widget.calendar.month,
-        date = os.date("*t")
+        date = os.date("*t"),
+        long_weekdays = true,
+        fn_embed = function (widget, flag, date)
+            if flag == "monthheader" or flag == "month" then
+                flag = "header"
+            end
+
+            local style = calendarStyles[flag]
+            if style == nil then
+                utility.notifyInfo("Nil calendar style", flag)
+                return widget
+            end
+
+            return Wibox.widget {
+                widget = Wibox.container.background,
+                fg = style.fg,
+
+                widget
+            }
+        end
     }
 
     return widget
