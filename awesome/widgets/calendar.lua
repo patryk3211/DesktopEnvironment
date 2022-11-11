@@ -140,4 +140,13 @@ function module.makeCalendar()
     return widget
 end
 
+function module.makeCompactClock()
+    local widget = Wibox.widget {
+        widget = Wibox.widget.textclock,
+        format = "<b>%H:%M</b>\n%a %d, %b %Y",
+        halign = "center"
+    }
+    return widget
+end
+
 return module

@@ -131,6 +131,14 @@ config.mainmenu_layout = {
         width = 1,
         height = 3,
         wrap = true
+    },
+    clock = {
+        x = 15,
+        y = 8,
+        width = 2,
+        height = 1,
+        wrap = true,
+        wrap_margin = 5
     }
 }
 

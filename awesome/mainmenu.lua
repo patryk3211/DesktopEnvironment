@@ -7,12 +7,13 @@ local powermenuWidget = require("widgets.powermenu")
 local wifiPopup = require("widgets.wifipopup")
 local placesWidget = require("widgets.places")
 local brightnessWidget = require("widgets.brightness")
+local clockWidget = require("widgets.calendar")
 
 local networkDev = require("devices.network")
 
 local module = {}
 
-local function widgetContainer(widget)
+local function widgetContainer(widget, conf)
     local layout = Wibox.widget {
         widget = Wibox.container.background,
         bg = Theme.mm_container_bg,
@@ -20,10 +21,10 @@ local function widgetContainer(widget)
 
         {
             widget = Wibox.container.margin,
-            top = Theme.mm_container_margin,
-            bottom = Theme.mm_container_margin,
-            right = Theme.mm_container_margin,
-            left = Theme.mm_container_margin,
+            top = conf.wrap_margin or Theme.mm_container_margin,
+            bottom = conf.wrap_margin or Theme.mm_container_margin,
+            right = conf.wrap_margin or Theme.mm_container_margin,
+            left = conf.wrap_margin or Theme.mm_container_margin,
 
             widget
         }
@@ -123,6 +124,9 @@ local function makeWidget()
         -- Make brightness widget
         module.brightness = brightnessWidget.make()
 
+        -- Make clock widget
+        module.clock = clockWidget.makeCompactClock()
+
         -- Make module grid
         module.menuGrid = Wibox.widget {
             layout = Wibox.layout.grid,
@@ -137,7 +141,7 @@ local function makeWidget()
         for name, conf in pairs(config.mainmenu_layout) do
             local widget = module[name]
             if conf.wrap then
-                widget = widgetContainer(widget)
+                widget = widgetContainer(widget, conf)
             end
 
             module.menuGrid:add_widget_at(widget, conf.y, conf.x, conf.height, conf.width)

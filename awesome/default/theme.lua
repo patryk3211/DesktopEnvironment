@@ -69,7 +69,7 @@ theme.battery_bar_bg = "#202020"
 theme.battery_bar_fg = "#ffffff"
 
 theme.battery_icon_unknown = "battery/empty"
-theme.battery_warning_level = 0.05
+theme.battery_warning_level = 0.1
 theme.battery_warning_color = "#ff0000"
 theme.battery_normal_color = "#ffffff"
 theme.battery_charging_color = "#00ff00"
