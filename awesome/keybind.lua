@@ -49,7 +49,10 @@ function module.bindGlobal()
         end, { description = "Increase master width factor" }),
         Awful.key({ config.modKey }, "s", function ()
             Awful.tag.incmwfact(-0.05)
-        end, { description = "Descrease master width factor" })
+        end, { description = "Descrease master width factor" }),
+        Awful.key({ }, "Print", function ()
+            Awful.spawn("spectacle")
+        end, { description = "Take a screenshot "})
     })
 
     Awful.keyboard.append_global_keybindings({
