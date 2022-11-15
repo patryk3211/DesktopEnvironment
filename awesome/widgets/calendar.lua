@@ -10,6 +10,9 @@ function module.makeClock()
                                 10, 10, 6, 6)
     )
 
+    local calendar = module.makeCalendar()
+    local currentDate
+
     local closeButton = Wibox.widget {
         widget = Wibox.container.background,
         {
@@ -29,6 +32,77 @@ function module.makeClock()
     }
 
     utility.smoothHoverColor(closeButton, Theme.calendar_header_bg, Theme.calendar_close_hover_color)
+
+    local leftButton = Wibox.widget {
+        widget = Wibox.container.background,
+        {
+            widget = Wibox.container.constraint,
+            strategy = "exact",
+            width = 20,
+            {
+                widget = Wibox.container.place,
+                valign = "center",
+                halign = "center",
+                {
+                    widget = Wibox.widget.imagebox,
+                    image = Theme.getIcon("arrow-left", "#ffffff")
+                }
+            }
+        }
+    }
+
+    leftButton:buttons({
+        Awful.button({}, 1, function ()
+            -- Go to previous month
+            local newDate = { month = calendar.date.month - 1, year = calendar.date.year }
+            if newDate.month < 1 then
+                newDate.month = 12
+                newDate.year = newDate.year - 1
+            end
+
+            if newDate.month == currentDate.month and newDate.year == currentDate.year then
+                newDate.day = currentDate.day
+            end
+            calendar.date = newDate
+        end)
+    })
+
+    local rightButton = Wibox.widget {
+        widget = Wibox.container.background,
+        {
+            widget = Wibox.container.constraint,
+            strategy = "exact",
+            width = 20,
+            {
+                widget = Wibox.container.place,
+                valign = "center",
+                halign = "center",
+                {
+                    widget = Wibox.widget.imagebox,
+                    image = Theme.getIcon("arrow-right", "#ffffff")
+                }
+            }
+        }
+    }
+
+    rightButton:buttons({
+        Awful.button({}, 1, function ()
+            -- Go to next month
+            local newDate = { month = calendar.date.month + 1, year = calendar.date.year }
+            if newDate.month > 12 then
+                newDate.month = 1
+                newDate.year = newDate.year + 1
+            end
+
+            if newDate.month == currentDate.month and newDate.year == currentDate.year then
+                newDate.day = currentDate.day
+            end
+            calendar.date = newDate
+        end)
+    })
+
+    utility.smoothHoverColor(leftButton, Theme.calendar_bg, Theme.calendar_button_hover)
+    utility.smoothHoverColor(rightButton, Theme.calendar_bg, Theme.calendar_button_hover)
 
     local calendarPopup = Awful.popup {
         widget = {
@@ -55,13 +129,18 @@ function module.makeClock()
                     }
                 },
                 {
-                    widget = Wibox.container.margin,
-                    top = 4,
-                    bottom = 4,
-                    left = 8,
-                    right = 8,
+                    layout = Wibox.layout.fixed.horizontal,
+                    leftButton,
+                    {
+                        widget = Wibox.container.margin,
+                        top = 4,
+                        bottom = 4,
+                        left = 8,
+                        right = 8,
 
-                    module.makeCalendar()
+                        calendar
+                    },
+                    rightButton
                 }
             }
         },
@@ -78,8 +157,13 @@ function module.makeClock()
         Awful.button({}, 1, function ()
             if calendarPopup.visible then
                 calendarPopup.visible = false
+                calendarPopup.placement = Awful.placement.next_to
             else
                 calendarPopup:move_next_to(widget)
+                local date = os.date("*t")
+                calendar.date = { year = date.year, month = date.month, day = date.day }
+                currentDate = calendar.date
+                calendarPopup.placement = nil
             end
         end)
     })
@@ -87,6 +171,7 @@ function module.makeClock()
     closeButton:buttons({
         Awful.button({}, 1, function ()
             calendarPopup.visible = false
+            calendarPopup.placement = Awful.placement.next_to
         end)
     })
 
