@@ -11,6 +11,7 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 
 local posix = require("posix.stdlib")
+local unistd = require("posix.unistd")
 
 local config = require("config")
 local utility = require("utility")
@@ -55,6 +56,7 @@ require("signals")
 -- Setup the environment and startup the default applications
 posix.setenv("QT_QPA_PLATFORMTHEME", "qt5ct")
 posix.setenv("PATH", os.getenv("PATH")..":/home/patryk/.cargo/bin:/var/lib/snapd/snap/bin:/home/patryk/.local/bin")
+posix.setenv("SSH_AUTH_SOCK", "/run/user/"..tostring(unistd.getuid()).."/ssh-agent.socket")
 
 Awful.spawn("setxkbmap -layout \"pl,us\"")
 Awful.spawn("wmname LD3D")
