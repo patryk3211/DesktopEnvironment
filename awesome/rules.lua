@@ -19,8 +19,8 @@ ruled.client.connect_signal("request::rules", function ()
 
     ruled.client.append_rule {
         id = "browser_tag",
-        rule_any = {
-            class = { "firefox" }
+        rule = {
+            class = "firefox"
         },
         properties = {
             screen = 1,
@@ -30,8 +30,8 @@ ruled.client.connect_signal("request::rules", function ()
 
     ruled.client.append_rule {
         id = "discord_tag",
-        rule_any = {
-            class = { "discord" }
+        rule = {
+            class = "discord"
         },
         properties = {
             screen = 1,
@@ -41,8 +41,11 @@ ruled.client.connect_signal("request::rules", function ()
 
     ruled.client.append_rule {
         id = "password_manager_tag",
-        rule_any = {
-            instance = { "keepassxc" }
+        rule = {
+            class = "KeePassXC"
+        },
+        except_any = {
+            type = { "dialog", "menu", "notification", "combo", "dropdown_menu", "popup_menu" }
         },
         properties = {
             screen = 1,
@@ -52,8 +55,8 @@ ruled.client.connect_signal("request::rules", function ()
 
     ruled.client.append_rule {
         id = "steam_tag",
-        rule_any = {
-            class = { "Steam" }
+        rule = {
+            class = "Steam"
         },
         properties = {
             screen = 1,
