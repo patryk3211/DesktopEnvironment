@@ -62,6 +62,7 @@ Awful.spawn("setxkbmap -layout \"pl,us\"")
 Awful.spawn("wmname LD3D")
 utility.spawnOne("picom")
 utility.spawnOne("xss-lock dm-tool lock")
+utility.spawnOne("thunderbird")
 
 -- Setup garbage collector variables
 collectgarbage("setstepmul", 400)

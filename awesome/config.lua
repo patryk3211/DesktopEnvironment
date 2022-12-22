@@ -62,6 +62,13 @@ config.groups = {
         program = "steam",
         hideEmpty = true,
         spawnOne = false
+    },
+    {
+	groupName = utf8.char(0xf6ed),
+	displayName = "ThunderBird",
+	program = "thunderbird",
+	hideEmpty = true,
+	spawnOne = true
     }
 }
 config.groupCount = #config.groups

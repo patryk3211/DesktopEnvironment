@@ -12,10 +12,10 @@ local function makeBar(icon, callback, value)
     local text = Wibox.widget.textbox(tostring(multipliedValue).."%")
     text.forced_width = 40
 
-    local widget, slider = sliderWidget.make(function (slider, value)
+    local slider = sliderWidget.makeHorizontal(function (value, slider)
         text.text = tostring(math.floor(value * 100)).."%"
         callback(slider, value)
-    end, multipliedValue, { color = Theme.mm_sound_slider_color, background = Theme.mm_sound_slider_bg })
+    end, value, { color = Theme.mm_sound_slider_color, background = Theme.mm_sound_slider_bg, thickness = 8 })
 
     local layout = Wibox.widget {
         layout = Wibox.layout.align.horizontal,
@@ -29,7 +29,7 @@ local function makeBar(icon, callback, value)
             left = 8,
             right = 8,
 
-            widget
+            slider
         },
         {
             widget = Wibox.container.margin,
@@ -41,8 +41,8 @@ local function makeBar(icon, callback, value)
             text
         }
     }
-    layout.slider = slider
 
+    layout.slider = slider
     return layout
 end
 
@@ -62,18 +62,18 @@ function module.make(audioInfoCallback)
         local bars = {
             makeBar("speaker", function (slider, value)
                 if not widget.speakerState then
-                    slider.setValue(slider.savedVolume)
+                    slider.set_value(slider.savedVolume)
                 else
                     widget.speakerVolume = value
-                    Awful.spawn("amixer -D pulse set Master "..tostring(value * 100).."%")
+                    Awful.spawn(string.format("amixer -D pulse set Master %d%%", math.floor(value * 100)))
                 end
             end, widget.speakerVolume),
             makeBar("microphone", function (slider, value)
                 if not widget.microphoneState then
-                    slider.setValue(slider.savedVolume)
+                    slider.set_value(slider.savedVolume)
                 else
                     widget.microphoneVolume = value
-                    Awful.spawn("amixer -D pulse set Capture "..tostring(value * 100).."%")
+                    Awful.spawn(string.format("amixer -D pulse set Capture %d%%", math.floor(value * 100)))
                 end
             end, widget.microphoneVolume)
         }
@@ -102,7 +102,7 @@ function module.make(audioInfoCallback)
                 strState = "unmute"
             end
             bars[barId].slider.setColor(color)
-            bars[barId].slider.savedVolume = bars[barId].slider.value / 100
+            bars[barId].slider.savedVolume = bars[barId].slider.value
             if barId == 1 then
                 Awful.spawn("amixer -D pulse set Master "..strState)
                 widget.speakerState = not state
@@ -113,8 +113,8 @@ function module.make(audioInfoCallback)
         end
 
         widget.updateBars = function ()
-            bars[1].slider.setValue(widget.speakerVolume)
-            bars[2].slider.setValue(widget.microphoneVolume)
+            bars[1].slider.set_value(widget.speakerVolume)
+            bars[2].slider.set_value(widget.microphoneVolume)
         end
 
         audioInfoCallback({

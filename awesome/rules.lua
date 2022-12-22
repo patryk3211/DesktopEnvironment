@@ -63,6 +63,17 @@ ruled.client.connect_signal("request::rules", function ()
             tag = config.groups[8].groupName
         }
     }
+
+    ruled.client.append_rule {
+	id = "thunderbird_tag",
+	rule = {
+		class = "thunderbird"
+	},
+	properties = {
+		screen = 1,
+		tag = config.groups[9].groupName
+	}
+    }
 end)
 
 local naughty = require("naughty")
