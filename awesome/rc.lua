@@ -43,7 +43,8 @@ require("devices.battery").init()
 -- Enable default layouts
 tag.connect_signal("request::default_layouts", function ()
     Awful.layout.append_default_layouts({
-        Awful.layout.suit.fair
+        Awful.layout.suit.fair,
+        Awful.layout.suit.float
     })
 end)
 

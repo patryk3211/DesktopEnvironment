@@ -101,7 +101,7 @@ function module.make(audioInfoCallback)
                 color = Theme.mm_sound_slider_color
                 strState = "unmute"
             end
-            bars[barId].slider.setColor(color)
+            bars[barId].slider.fg = color
             bars[barId].slider.savedVolume = bars[barId].slider.value
             if barId == 1 then
                 Awful.spawn("amixer -D pulse set Master "..strState)
