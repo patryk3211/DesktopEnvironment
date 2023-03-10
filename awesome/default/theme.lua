@@ -159,6 +159,10 @@ theme.layoutlist_fg_normal = theme.fg_normal
 theme.layoutlist_bg_selected = theme.taglist_bg_focus
 theme.layoutlist_fg_selected = theme.taglist_fg_focus
 
+-- Task list style
+theme.tasklist_bg_normal = theme.bg_normal
+theme.tasklist_bg_focus = "#484848"
+
 -- Define the image to load
 --theme.titlebar_close_button_normal = themes_path.."default/titlebar/close_normal.png"
 --theme.titlebar_close_button_focus  = themes_path.."default/titlebar/close_focus.png"

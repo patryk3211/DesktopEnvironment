@@ -186,4 +186,10 @@ module.taglistButtons = Gears.table.join(
     end)
 )
 
+module.tasklistButtons = Gears.table.join(
+    Awful.button({ }, 1, function (c)
+        c:activate { context = "tasklist", action = "toggle_minimization" }
+    end)
+)
+
 return module

@@ -95,6 +95,42 @@ local function makeTopBar(screen)
     ))
     utility.smoothHoverColor(menuIcon, Theme.bg_normal, "#303030")
 
+    screen.tasklist = Awful.widget.tasklist {
+        screen = screen,
+        filter = Awful.widget.tasklist.filter.currenttags,
+        widget_template = {
+            id = "background_role",
+            widget = Wibox.container.background,
+            {
+                widget = Wibox.container.margin,
+                top = 2,
+                bottom = 2,
+                left = 6,
+                right = 8,
+
+                {
+                    layout = Wibox.layout.fixed.horizontal,
+                    Awful.widget.clienticon,
+                    {
+                        widget = Wibox.container.margin,
+                        left = 6,
+                        top = 3,
+                        bottom = 3,
+                        {
+                            id = "text_role",
+                            widget = Wibox.widget.textbox
+                        }
+                    }
+                }
+            }
+        },
+        layout = {
+            layout = Wibox.layout.fixed.horizontal,
+            spacing = 5
+        },
+        buttons = keys.tasklistButtons
+    }
+
     screen.topbar = Awful.wibar({ position = "top", screen = screen, height = 28 })
     screen.topbar:setup({
         layout = Wibox.layout.align.horizontal,
@@ -108,7 +144,13 @@ local function makeTopBar(screen)
                 Wibox.widget.imagebox(Theme.getIcon(Theme.rightTriangle, Theme.taglist_bg))
             }
         },
-        nil, -- Middle
+        { -- Middle
+            widget = Wibox.container.margin,
+            left = 10,
+            right = 10,
+
+            screen.tasklist,
+        },
         makeInfoBar() -- Right
     })
 end
