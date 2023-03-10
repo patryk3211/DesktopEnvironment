@@ -52,7 +52,10 @@ function module.bindGlobal()
         end, { description = "Descrease master width factor" }),
         Awful.key({ }, "Print", function ()
             Awful.spawn("spectacle")
-        end, { description = "Take a screenshot "})
+        end, { description = "Take a screenshot "}),
+        Awful.key({ config.modKey }, "l", function ()
+            module.showLayoutMenu(Awful.screen.focused().selected_tag)
+        end, { description = "Open tag layout selection menu" })
     })
 
     Awful.keyboard.append_global_keybindings({

@@ -149,4 +149,15 @@ config.mainmenu_layout = {
     }
 }
 
+config.layouts = {
+    Awful.layout.suit.fair,
+
+    Awful.layout.suit.tile,
+    Awful.layout.suit.tile.left,
+    Awful.layout.suit.tile.top,
+    Awful.layout.suit.tile.bottom,
+
+    Awful.layout.suit.floating
+}
+
 return config

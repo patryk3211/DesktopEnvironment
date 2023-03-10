@@ -115,14 +115,106 @@ end
 
 
 
+local tagLayoutPopup = nil
+local function showLayoutMenu(tag)
+    tagLayoutPopup.widget.screen = tag.screen
+    tagLayoutPopup.visible = not tagLayoutPopup.visible
+
+    if tagLayoutPopup.visible then
+        Awful.keygrabber {
+            stop_callback = function ()
+                tagLayoutPopup.visible = false
+            end,
+            export_keybindings = false,
+            stop_event = "release",
+            stop_key = { "Escape", "Return" },
+            keybindings = {
+                {{ }, "d", function()
+                    Awful.layout.set((Gears.table.cycle_value(tagLayoutPopup.ll.layouts, tagLayoutPopup.ll.current_layout, 1)))
+                end },
+                {{ }, "a", function()
+                    Awful.layout.set((Gears.table.cycle_value(tagLayoutPopup.ll.layouts, tagLayoutPopup.ll.current_layout, -1)))
+                end }
+            }
+        }:start()
+    end
+end
+
+
+
+local function makeTagMenu()
+    if tagLayoutPopup ~= nil then
+        return
+    end
+
+    local layoutList = Awful.widget.layoutlist {
+        base_layout = {
+            layout = Wibox.layout.grid.horizontal,
+            spacing = 8,
+        },
+        widget_template = {
+            {
+                {
+                    id = "icon_role",
+                    forced_width = 40,
+                    forced_height = 40,
+                    widget = Wibox.widget.imagebox
+                },
+                margins = 4,
+                widget = Wibox.container.margin
+            },
+            id = "background_role",
+            forced_width = 40 + 8,
+            forced_height = 40 + 8,
+            widget = Wibox.container.background,
+            shape = Gears.shape.rounded_rect
+        }
+    }
+
+    tagLayoutPopup = Awful.popup {
+        widget = Wibox.widget {
+            widget = Wibox.container.background,
+            bg = Theme.layoutlist_bg_normal,
+            shape = Gears.shape.rounded_rect,
+
+            {
+                widget = Wibox.container.margin,
+                top = 8,
+                bottom = 8,
+                right = 8,
+                left = 8,
+
+                layoutList
+            }
+        },
+        visible = false,
+        ontop = true,
+        placement = function(d, args)
+            args.offset = { y = -50 }
+            return Awful.placement.bottom(d, args)
+        end,
+        preferred_positions = "bottom",
+        preferred_anchor = "middle",
+        bg = "transparent"
+    }
+
+    tagLayoutPopup.ll = layoutList
+    keys.showLayoutMenu = showLayoutMenu
+end
+
+
+
 function module.makeScreen(screen)
     for i, value in ipairs(config.groups) do
         Awful.tag.add(value.groupName, {
             layout = Awful.layout.layouts[1],
+            master_fill_policy = "master_width_factor",
             screen = screen,
             index = i
         })
     end
+
+    makeTagMenu()
 
     -- Create the tag list
     screen.taglist = Awful.widget.taglist {

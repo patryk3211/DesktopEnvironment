@@ -42,10 +42,7 @@ require("devices.battery").init()
 
 -- Enable default layouts
 tag.connect_signal("request::default_layouts", function ()
-    Awful.layout.append_default_layouts({
-        Awful.layout.suit.fair,
-        Awful.layout.suit.float
-    })
+    Awful.layout.append_default_layouts(config.layouts)
 end)
 
 screen.connect_signal("request::wallpaper", screenConf.setWallpaper)
@@ -66,7 +63,7 @@ utility.spawnOne("xss-lock dm-tool lock")
 utility.spawnOne("thunderbird")
 
 -- Setup garbage collector variables
-collectgarbage("setstepmul", 400)
+collectgarbage("step", 400)
 
 Gears.timer {
     timeout = 30,

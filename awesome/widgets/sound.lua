@@ -96,20 +96,25 @@ function module.make(audioInfoCallback)
 
         widget.setMute = function (barId, state)
             local color = Theme.mm_sound_slider_color_muted
-            local strState = "mute"
-            if not state then
-                color = Theme.mm_sound_slider_color
-                strState = "unmute"
-            end
-            bars[barId].slider.fg = color
             bars[barId].slider.savedVolume = bars[barId].slider.value
             if barId == 1 then
+                local strState = "mute"
+                if not state then
+                    color = Theme.mm_sound_slider_color
+                    strState = "unmute"
+                end
                 Awful.spawn("amixer -D pulse set Master "..strState)
                 widget.speakerState = not state
             elseif barId == 2 then
+                local strState = "nocap"
+                if not state then
+                    color = Theme.mm_sound_slider_color
+                    strState = "cap"
+                end
                 Awful.spawn("amixer -D pulse set Capture "..strState)
                 widget.microphoneState = not state
             end
+            bars[barId].slider.fg = color
         end
 
         widget.updateBars = function ()
@@ -123,27 +128,34 @@ function module.make(audioInfoCallback)
         })
     end)
 
-    Awful.spawn.easy_async("amixer -D pulse get Master", function (stdout, stderr, code, reason)
-        local percent, state = stdout:match("Playback%s+%d+%s+%[(%d+)%%%]%s+%[(%w+)%]")
-        widget.speakerVolume = percent / 100
-        if state == "on" then
-            widget.speakerState = true
-        else
-            widget.speakerState = false
-        end
-        coroutine.resume(makeMenu)
-    end)
+    Gears.timer {
+        timeout = 1,
+        autostart = true,
+        single_shot = true,
+        callback = function ()
+            Awful.spawn.easy_async("amixer -D pulse get Master", function (stdout, stderr, code, reason)
+                local percent, state = stdout:match("Playback%s+%d+%s+%[(%d+)%%%]%s+%[(%w+)%]")
+                widget.speakerVolume = percent / 100
+                if state == "on" then
+                    widget.speakerState = true
+                else
+                    widget.speakerState = false
+                end
+                coroutine.resume(makeMenu)
+            end)
 
-    Awful.spawn.easy_async("amixer -D pulse get Capture", function (stdout, stderr, code, reason)
-        local percent, state = stdout:match("Capture%s+%d+%s+%[(%d+)%%%]%s+%[(%w+)%]")
-        widget.microphoneVolume = percent / 100
-        if state == "on" then
-            widget.microphoneState = true
-        else
-            widget.microphoneState = false
+            Awful.spawn.easy_async("amixer -D pulse get Capture", function (stdout, stderr, code, reason)
+                local percent, state = stdout:match("Capture%s+%d+%s+%[(%d+)%%%]%s+%[(%w+)%]")
+                widget.microphoneVolume = percent / 100
+                if state == "on" then
+                    widget.microphoneState = true
+                else
+                    widget.microphoneState = false
+                end
+                coroutine.resume(makeMenu)
+            end)
         end
-        coroutine.resume(makeMenu)
-    end)
+    }
 
     return widget
 end

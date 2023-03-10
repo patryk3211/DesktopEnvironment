@@ -32,7 +32,7 @@ theme.border_focus  = "#207bb8"
 theme.border_marked = "#91231c"
 
 theme.bg_systray = "#202020"
-theme.systray_icon_spacing = 6
+theme.systray_icon_spacing = dpi(6)
 
 -- Base colors for taglist
 theme.taglist_bg = "#181818"
@@ -76,13 +76,13 @@ theme.battery_charging_color = "#00ff00"
 
 -- Main menu
 theme.mm_container_bg = "#181818"
-theme.mm_container_margin = 10
-theme.mm_spacing = 10
+theme.mm_container_margin = dpi(10)
+theme.mm_spacing = dpi(10)
 
 -- Control widget style
-theme.mm_control_spacing = 10
+theme.mm_control_spacing = dpi(10)
 theme.mm_control_bg = "#181818"
-theme.mm_control_button_size = 56
+theme.mm_control_button_size = dpi(56)
 theme.mm_control_button_color = "#282828"
 theme.mm_control_button_color_pressed = "#207bb8"
 theme.mm_control_button_color_disabled = "#383838"
@@ -153,6 +153,12 @@ theme.notification_border_color = "#383838"
 theme.notification_bg = "#282828"
 theme.notification_fg = "#aaaaaa"
 
+-- Layout popup style
+theme.layoutlist_bg_normal = theme.bg_systray
+theme.layoutlist_fg_normal = theme.fg_normal
+theme.layoutlist_bg_selected = theme.taglist_bg_focus
+theme.layoutlist_fg_selected = theme.taglist_fg_focus
+
 -- Define the image to load
 --theme.titlebar_close_button_normal = themes_path.."default/titlebar/close_normal.png"
 --theme.titlebar_close_button_focus  = themes_path.."default/titlebar/close_focus.png"
@@ -185,22 +191,22 @@ theme.wallpaper = config.themePath.."/wallpaper.jpg"
 theme.profile_picture = config.themePath.."/profile.png"
 
 -- You can use your own layout icons like this:
--- theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
--- theme.layout_fairv = themes_path.."default/layouts/fairvw.png"
--- theme.layout_floating  = themes_path.."default/layouts/floatingw.png"
--- theme.layout_magnifier = themes_path.."default/layouts/magnifierw.png"
--- theme.layout_max = themes_path.."default/layouts/maxw.png"
--- theme.layout_fullscreen = themes_path.."default/layouts/fullscreenw.png"
--- theme.layout_tilebottom = themes_path.."default/layouts/tilebottomw.png"
--- theme.layout_tileleft   = themes_path.."default/layouts/tileleftw.png"
--- theme.layout_tile = themes_path.."default/layouts/tilew.png"
--- theme.layout_tiletop = themes_path.."default/layouts/tiletopw.png"
--- theme.layout_spiral  = themes_path.."default/layouts/spiralw.png"
--- theme.layout_dwindle = themes_path.."default/layouts/dwindlew.png"
--- theme.layout_cornernw = themes_path.."default/layouts/cornernww.png"
--- theme.layout_cornerne = themes_path.."default/layouts/cornernew.png"
--- theme.layout_cornersw = themes_path.."default/layouts/cornersww.png"
--- theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
+theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
+theme.layout_fairv = themes_path.."default/layouts/fairvw.png"
+theme.layout_floating  = themes_path.."default/layouts/floatingw.png"
+theme.layout_magnifier = themes_path.."default/layouts/magnifierw.png"
+theme.layout_max = themes_path.."default/layouts/maxw.png"
+theme.layout_fullscreen = themes_path.."default/layouts/fullscreenw.png"
+theme.layout_tilebottom = themes_path.."default/layouts/tilebottomw.png"
+theme.layout_tileleft   = themes_path.."default/layouts/tileleftw.png"
+theme.layout_tile = themes_path.."default/layouts/tilew.png"
+theme.layout_tiletop = themes_path.."default/layouts/tiletopw.png"
+theme.layout_spiral  = themes_path.."default/layouts/spiralw.png"
+theme.layout_dwindle = themes_path.."default/layouts/dwindlew.png"
+theme.layout_cornernw = themes_path.."default/layouts/cornernww.png"
+theme.layout_cornerne = themes_path.."default/layouts/cornernew.png"
+theme.layout_cornersw = themes_path.."default/layouts/cornersww.png"
+theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
 
 -- Icons
 theme.getIcon = function (name, color)
