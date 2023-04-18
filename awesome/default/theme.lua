@@ -49,7 +49,7 @@ theme.taglist_bg_empty = theme.taglist_bg
 theme.taglist_fg_empty = "#999999"
 theme.taglist_bg_volatile = "#00ff00" -- TODO
 theme.taglist_fg_volatile = "#0000ff" -- TODO
-theme.taglist_font = "Hack Nerd Regular 28"
+theme.taglist_font = "Hack Nerd Regular 32"
 
 -- Set info bar style
 theme.clock_bg = "#181818"

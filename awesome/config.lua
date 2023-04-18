@@ -11,25 +11,25 @@ config.iconPath = config.themePath.."/icons"
 
 config.groups = {
     {
-        groupName = utf8.char(0xf878),
+        groupName = utf8.char(0xf0379),
         displayName = "Main",
         program = nil,
         hideEmpty = false
     },
     {
-        groupName = utf8.char(0xf9f8),
+        groupName = utf8.char(0xf04f9),
         displayName = "Second Tag",
         program = nil,
         hideEmpty = true
     },
     {
-        groupName = utf8.char(0xf9f8),
+        groupName = utf8.char(0xf04f9),
         displayName = "Third Tag",
         program = nil,
         hideEmpty = true
     },
     {
-        groupName = utf8.char(0xf738),
+        groupName = utf8.char(0xf0239),
         displayName = "Firefox",
         program = "firefox",
         spawnOne = true,
@@ -43,32 +43,32 @@ config.groups = {
         hideEmpty = true
     },
     {
-        groupName = utf8.char(0xfb6e),
+        groupName = utf8.char(0xf066f),
         displayName = "Discord",
         program = "discord",
         spawnOne = false,
         hideEmpty = true
     },
     {
-        groupName = utf8.char(0xf43d),
+        groupName = utf8.char(0xf0306),
         displayName = "Keepass",
         program = "keepassxc",
         spawnOne = false,
         hideEmpty = true
     },
     {
-        groupName = utf8.char(0xf9d2),
+        groupName = utf8.char(0xf04d3),
         displayName = "Steam",
         program = "steam",
         hideEmpty = true,
         spawnOne = false
     },
     {
-	groupName = utf8.char(0xf6ed),
-	displayName = "ThunderBird",
-	program = "thunderbird",
-	hideEmpty = true,
-	spawnOne = true
+        groupName = utf8.char(0xf01ee),
+        displayName = "ThunderBird",
+        program = "thunderbird",
+        hideEmpty = true,
+        spawnOne = true
     }
 }
 config.groupCount = #config.groups

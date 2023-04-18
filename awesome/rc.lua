@@ -61,6 +61,7 @@ Awful.spawn("wmname LD3D")
 utility.spawnOne("picom")
 utility.spawnOne("xss-lock dm-tool lock")
 utility.spawnOne("thunderbird")
+utility.spawnOne("keepassxc")
 
 -- Setup garbage collector variables
 collectgarbage("step", 400)

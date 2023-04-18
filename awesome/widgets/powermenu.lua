@@ -31,7 +31,7 @@ module.buttons = {
                 -- Close all windows gracefully
                 c:kill()
             end
-            Awful.spawn.with_shell("loginctl terminate-session $XDG_SESSION_ID")
+            Awful.spawn.with_shell("loginctl kill-session $XDG_SESSION_ID")
         end
     },
     {
