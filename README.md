@@ -28,7 +28,7 @@ Packages that have to be downloaded to run this setup
 - Fira Mono - Monospace font, Arch package: [`ttf-fira-mono`](https://archlinux.org/packages/community/any/ttf-fira-mono)
 - Fira Code - Monospace font with cool effects, Arch package: [`ttf-fira-code`](https://archlinux.org/packages/community/any/ttf-fira-code)
 - Font Awesome - Font used for some symbols, Arch package: [`ttf-font-awesome`](https://archlinux.org/packages/community/any/ttf-font-awesome)
-- Hack Nerd Font - Hack font with symbols, download [here](https://www.nerdfonts.com/)
+- Hack Nerd Font - Hack font with symbols, Arch package: [`ttf-hack-nerd`](https://archlinux.org/packages/community/any/ttf-hack-nerd)
 
 ## Resources used
 List of all outside resources contained in this repository
